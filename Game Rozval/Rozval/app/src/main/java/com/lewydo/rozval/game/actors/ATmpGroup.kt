@@ -5,6 +5,9 @@ import com.lewydo.rozval.game.utils.advanced.AdvancedScreen
 
 class ATmpGroup constructor(override val screen: AdvancedScreen): AdvancedGroup() {
 
+    override fun getPrefHeight() = height
+    override fun getPrefWidth() = width
+
     override fun addActorsOnGroup() {}
 
 }

@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.viewport.Viewport
+import com.lewydo.rozval.game.utils.advanced.preRenderGroup.renderPreRenderables
 
 open class AdvancedStage(viewport: Viewport) : Stage(viewport) {
 
@@ -31,6 +32,11 @@ open class AdvancedStage(viewport: Viewport) : Stage(viewport) {
     fun render() {
         viewport.apply()
         act()
+
+        batch.begin()
+        actors.forEach { renderPreRenderables(it, batch, 1f) } // 🧠 Попередній рендеринг FBO-груп
+        batch.end()
+
         draw()
     }
 

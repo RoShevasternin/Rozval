@@ -10,9 +10,12 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.viewport.Viewport
+import com.lewydo.rozval.game.GDXGame
 
 typealias Block = () -> Unit
 typealias Acts = Actions
+
+val gdxGame: GDXGame get() = Gdx.app.applicationListener as GDXGame
 
 val Texture.region: TextureRegion get() = TextureRegion(this)
 val Float.toMS: Long get() = (this * 1000).toLong()

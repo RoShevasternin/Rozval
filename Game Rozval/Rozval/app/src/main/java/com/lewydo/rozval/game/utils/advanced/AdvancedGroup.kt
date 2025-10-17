@@ -3,6 +3,7 @@ package com.lewydo.rozval.game.utils.advanced
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Actor
+import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.Disposable
@@ -12,6 +13,7 @@ import com.lewydo.rozval.util.OneTime
 import com.lewydo.rozval.util.cancelCoroutinesAll
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import java.util.concurrent.atomic.AtomicBoolean
 
 abstract class AdvancedGroup : WidgetGroup(), Disposable {
     abstract val screen: AdvancedScreen
@@ -34,7 +36,7 @@ abstract class AdvancedGroup : WidgetGroup(), Disposable {
     val Float.scaled          get() = sizeScaler.scaled(this)
     val Float.scaledInverse   get() = sizeScaler.scaledInverse(this)
 
-    private val onceInit = OneTime()
+    private val onceInit = AtomicBoolean(true)
 
     abstract fun addActorsOnGroup()
 
@@ -44,10 +46,27 @@ abstract class AdvancedGroup : WidgetGroup(), Disposable {
         postDrawArray.forEach { it.draw(parentAlpha * this@AdvancedGroup.color.a) }
     }
 
+    override fun setStage(stage: Stage?) {
+        super.setStage(stage)
+
+        tryInitGroup()
+        // Якщо розмірів або stage немає, виконаємо це в `sizeChanged()`
+    }
+
     override fun sizeChanged() {
         super.sizeChanged()
-        sizeScaler.calculateScale(Vector2(width, height))
-        onceInit.use { addActorsOnGroup() }
+
+        tryInitGroup()
+        // Якщо розмірів або stage немає, виконаємо це в `setStage()`
+    }
+
+    private fun tryInitGroup() {
+        // Якщо є розміри і stage, то ініціалізацію виконуємо один раз.
+        // (Це абсолютно моє рішення, якщо ви знаєте краще використовуйте його)
+        if (width > 0 && height > 0 && stage != null) {
+            sizeScaler.calculateScale(Vector2(width, height))
+            if (onceInit.getAndSet(false)) { addActorsOnGroup() }
+        }
     }
 
     override fun dispose() {

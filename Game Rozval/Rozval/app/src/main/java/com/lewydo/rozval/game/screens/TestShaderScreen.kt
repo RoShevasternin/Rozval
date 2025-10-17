@@ -2,15 +2,22 @@ package com.lewydo.rozval.game.screens
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.utils.Align
 import com.lewydo.rozval.game.GDXGame
+import com.lewydo.rozval.game.actors.ATmpGroup
 import com.lewydo.rozval.game.actors.progress.AProgressDefault
+import com.lewydo.rozval.game.actors.shader.AMaskGroup
 import com.lewydo.rozval.game.actors.shader.ATestShader
 import com.lewydo.rozval.game.utils.*
 import com.lewydo.rozval.game.utils.actor.animHide
+import com.lewydo.rozval.game.utils.actor.setBounds
+import com.lewydo.rozval.game.utils.advanced.AdvancedGroup
 import com.lewydo.rozval.game.utils.advanced.AdvancedScreen
 import com.lewydo.rozval.game.utils.advanced.AdvancedStage
 import com.lewydo.rozval.game.utils.font.FontParameter
@@ -24,10 +31,32 @@ class TestShaderScreen(override val game: GDXGame): AdvancedScreen() {
     private val progress = AProgressDefault(this)
     private val lblFPS   = Label("", LabelStyle(font60, Color.BLACK))
 
+    private var movableActor: AdvancedGroup? = null
+
+    private val tmpGroup = ATmpGroup(this)
+    private val scroll   = ScrollPane(tmpGroup)
+
     override fun show() {
         setBackBackground(drawerUtil.getRegion(Color.GRAY))
         //setUIBackground(game.assetsAll.LVL_1.region)
         super.show()
+
+        stageUI.root.addListener(object : InputListener() {
+            override fun touchDown(
+                event: InputEvent?,
+                x: Float,
+                y: Float,
+                pointer: Int,
+                button: Int
+            ): Boolean {
+                return true
+            }
+
+            override fun touchDragged(event: InputEvent?, x: Float, y: Float, pointer: Int) {
+                super.touchDragged(event, x, y, pointer)
+                //movableActor?.setPosition(x, y)
+            }
+        })
     }
 
     override fun AdvancedStage.addActorsOnStageUI() {
@@ -48,23 +77,22 @@ class TestShaderScreen(override val game: GDXGame): AdvancedScreen() {
         person2.debug()
         person2.setBounds(57f, 566f, 200f, 315f)
 
+        person1.color.a = 1f
+        person2.color.a = 0.5f
 
 
-        val test = ATestShader(this@TestShaderScreen)
+
+        val test = AMaskGroup(this@TestShaderScreen, gdxGame.assetsAll.MASK_CIRCLE)
         test.debug()
-        //test.setBounds(635f, 480f, 200f, 315f)
+        test.setBounds(635f, 480f, 200f, 315f)
+        movableActor = test
 
         val test2 = ATestShader(this@TestShaderScreen)
         test2.debug()
-        test2.setBounds(635f, 480f, 200f, 315f)
+        test2.setBounds(10f, 50f, 200f, 315f)
 
-        addActors(person1, /*test,*/ person2, test2)
-
-        person1.color.a = 1f
-        person2.color.a = 1f
-
-test2.addActor(test)
-
+        addActors(person1, person2)
+        tmpGroup.addActor(test)
 
         val p1 = Image(game.assetsLoader.builderList[1])
         p1.debug()
@@ -77,6 +105,13 @@ test2.addActor(test)
         test.addActor(p1)
         test2.addActor(p2)
 
+        //test.addActor(test2)
+
+        test.setOrigin(Align.center)
+        //test.addAction(Acts.forever(Acts.rotateBy(-360f, 5f)))
+
+        test.color.a = 0.5f
+        //test2.color.a = 0.5f
 
 
 
@@ -84,8 +119,22 @@ test2.addActor(test)
             progress.progressPercentFlow.collect {
                 p1.x = it * 3
                 p2.x = -it * 3
+
+                //test.x = it * 3
             }
         }
+
+        addScroll()
+    }
+
+    private fun AdvancedStage.addScroll() {
+        addActor(scroll)
+        scroll.setBounds(1263f, 109f, 602f, 707f)
+
+        tmpGroup.setSize(1000f, 2000f)
+
+        scroll.debug()
+        tmpGroup.debug()
     }
 
     override fun render(delta: Float) {
@@ -94,7 +143,7 @@ test2.addActor(test)
     }
 
     override fun hideScreen(block: Block) {
-                stageBack.root.animHide(TIME_ANIM_SCREEN) { block.invoke() }
+        stageBack.root.animHide(TIME_ANIM_SCREEN) { block.invoke() }
     }
 
 }
