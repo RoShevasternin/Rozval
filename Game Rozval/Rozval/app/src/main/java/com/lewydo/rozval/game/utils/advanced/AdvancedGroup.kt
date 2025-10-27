@@ -9,7 +9,6 @@ import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.Disposable
 import com.lewydo.rozval.game.utils.SizeScaler
 import com.lewydo.rozval.game.utils.disposeAll
-import com.lewydo.rozval.util.OneTime
 import com.lewydo.rozval.util.cancelCoroutinesAll
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -37,6 +36,9 @@ abstract class AdvancedGroup : WidgetGroup(), Disposable {
     val Float.scaledInverse   get() = sizeScaler.scaledInverse(this)
 
     private val onceInit = AtomicBoolean(true)
+
+    private val mapIsTransform = mutableMapOf<AdvancedGroup, Boolean>()
+
 
     abstract fun addActorsOnGroup()
 
@@ -94,6 +96,43 @@ abstract class AdvancedGroup : WidgetGroup(), Disposable {
     fun disposeAndClearChildren() {
         children.onEach { actor -> if (actor is Disposable) actor.dispose() }
         clearChildren()
+    }
+
+    private fun setIsTransformAll(newIsTransform: Boolean, states: MutableMap<AdvancedGroup, Boolean>) {
+        states[this] = isTransform
+        isTransform  = newIsTransform
+
+        children.begin()
+        for (i in 0 until children.size) {
+            val child = children[i]
+            if(child is AdvancedGroup) child.setIsTransformAll(newIsTransform, states)
+        }
+        children.end()
+    }
+
+    private fun restoreTransforms(states: Map<AdvancedGroup, Boolean>) {
+        for ((group, state) in states) {
+            group.isTransform = state
+        }
+        mapIsTransform.clear()
+    }
+
+    fun drawChildrenWithoutTransform(batch: Batch, parentAlpha: Float) {
+        // Вимикаємо трансформації у всьому дереві
+        setIsTransformAll(false, mapIsTransform)
+
+        // Малюємо усіх дітей (усі групи без трансформацій)
+        children.begin()
+        for (i in 0 until children.size) {
+            val child = children[i]
+            if (child.isVisible) {
+                child.draw(batch, parentAlpha)
+            }
+        }
+        children.end()
+
+        // Відновлюємо трансформації після малювання
+        restoreTransforms(mapIsTransform)
     }
 
     fun addAlignActor(

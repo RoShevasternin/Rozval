@@ -29,7 +29,7 @@
 
         override fun getPreRenderMethods()= object : PreRenderMethods {
             override fun renderFboGroup(batch: Batch, parentAlpha: Float) {
-                drawChildrenSimple(batch, parentAlpha)
+                drawChildrenWithoutTransform(batch, parentAlpha)
             }
 
             override fun renderFboResult(batch: Batch, parentAlpha: Float) {

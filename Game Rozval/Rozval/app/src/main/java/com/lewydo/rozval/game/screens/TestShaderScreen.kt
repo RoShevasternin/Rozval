@@ -69,7 +69,7 @@ class TestShaderScreen(override val game: GDXGame): AdvancedScreen() {
             setAlignment(Align.center)
         }
 
-        val person1 = Image(game.assetsLoader.builderList[1])
+        val person1 = Image(game.assetsLoader.builderList[3])
         person1.debug()
         person1.setBounds(57f, 179f, 200f, 315f)
 
@@ -77,43 +77,41 @@ class TestShaderScreen(override val game: GDXGame): AdvancedScreen() {
         person2.debug()
         person2.setBounds(57f, 566f, 200f, 315f)
 
-        person1.color.a = 1f
+        person1.color.a = 0.5f
         person2.color.a = 0.5f
 
-
-
-        val test = AMaskGroup(this@TestShaderScreen, gdxGame.assetsAll.MASK_CIRCLE)
-        test.debug()
-        test.setBounds(635f, 480f, 200f, 315f)
-        movableActor = test
-
-        val test2 = ATestShader(this@TestShaderScreen)
-        test2.debug()
-        test2.setBounds(10f, 50f, 200f, 315f)
-
         addActors(person1, person2)
-        tmpGroup.addActor(test)
+
+        val mask = AMaskGroup(this@TestShaderScreen)// gdxGame.assetsAll.MASK_CIRCLE)
+        mask.debug()
+        mask.setBounds(862f, 442f, 195f, 395f)
+        addActor(mask)
 
         val p1 = Image(game.assetsLoader.builderList[1])
         p1.debug()
-        p1.setSize(200f, 315f)
+        p1.setBounds(0f, 60f, 200f, 315f)
+        mask.addActor(p1)
+
+//        val test2 = ATestShader(this@TestShaderScreen)
+//        test2.debug()
+//        test2.setBounds(10f, 50f, 200f, 315f)
 
         val p2 = Image(game.assetsLoader.builderList[2])
         p2.debug()
-        p2.setSize(200f, 315f)
+        p2.setBounds(0f, 0f, 200f, 315f)
+        mask.addActor(p2)
 
-        test.addActor(p1)
-        test2.addActor(p2)
-
-        //test.addActor(test2)
-
-        test.setOrigin(Align.center)
-        //test.addAction(Acts.forever(Acts.rotateBy(-360f, 5f)))
-
-        test.color.a = 0.5f
-        //test2.color.a = 0.5f
+        //this.root.color.a = 0.5f
+        p1.color.a = 0.5f
+        p2.color.a = 0.5f
 
 
+
+        // TODO: Створи Оболочку клас для акторів і груп яі будуть додаваться в наші ПреРендаребл груп,
+        //  ця оболочка просто рисує дітей в ФБО ПОНЯВ
+
+
+        addTest()
 
         coroutine?.launch {
             progress.progressPercentFlow.collect {
@@ -124,7 +122,52 @@ class TestShaderScreen(override val game: GDXGame): AdvancedScreen() {
             }
         }
 
-        addScroll()
+        //addScroll()
+    }
+
+    private fun AdvancedStage.addTest() {
+        val test = ATestShader(this@TestShaderScreen)
+        test.debug()
+        test.setBounds(400f, 50f, 200f, 315f)
+        //movableActor = test
+
+        val test2 = ATestShader(this@TestShaderScreen)
+        test2.debug()
+        test2.setBounds(0f, 5f, 200f, 315f)
+
+        addActor(test)
+        //tmpGroup.addActor(test)
+
+        val p1 = Image(game.assetsLoader.builderList[1])
+        p1.debug()
+        p1.setSize(200f, 315f)
+
+        val p2 = Image(game.assetsLoader.builderList[2])
+        p2.debug()
+        p2.setSize(200f, 315f)
+
+        val p3 = Image(game.assetsLoader.builderList[3])
+        p3.debug()
+        p3.setSize(200f, 315f)
+
+        test.addActor(p1)
+        test2.addActor(p2)
+        test.addActor(test2)
+
+        test.setOrigin(Align.center)
+        //test.addAction(Acts.forever(Acts.rotateBy(-360f, 5f)))
+
+        test.color.a = 0.5f
+        test2.color.a = 0.5f
+
+        coroutine?.launch {
+            progress.progressPercentFlow.collect {
+                p1.x = it * 3
+                p2.x = -it * 3
+
+                //test.x = it * 3
+            }
+        }
     }
 
     private fun AdvancedStage.addScroll() {

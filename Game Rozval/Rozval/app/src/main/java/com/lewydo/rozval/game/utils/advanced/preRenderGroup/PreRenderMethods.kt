@@ -6,6 +6,6 @@ interface PreRenderMethods {
 
     fun renderFboGroup(batch: Batch, parentAlpha: Float) {}
     fun applyEffect(batch: Batch, parentAlpha: Float) {}
-    fun renderFboResult(batch: Batch, parentAlpha: Float) {}
+    fun renderFboResult(batch: Batch, parentAlpha: Float)
 
 }

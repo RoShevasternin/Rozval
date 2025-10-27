@@ -34,7 +34,7 @@ open class AdvancedStage(viewport: Viewport) : Stage(viewport) {
         act()
 
         batch.begin()
-        actors.forEach { renderPreRenderables(it, batch, 1f) } // 🧠 Попередній рендеринг FBO-груп
+        actors.forEach { renderPreRenderables(it, batch, root.color.a) } // 🧠 Попередній рендеринг FBO-груп
         batch.end()
 
         draw()

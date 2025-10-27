@@ -1,7 +1,7 @@
 loader.png
 size: 509, 1143
 format: RGBA8888
-filter: Linear,Linear
+filter: Linear, Linear
 repeat: none
 builder-1
   rotate: false

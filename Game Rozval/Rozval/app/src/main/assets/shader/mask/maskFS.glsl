@@ -9,11 +9,20 @@ uniform sampler2D u_texture;    // Основна текстура
 uniform sampler2D u_mask;       // Текстура маски
 
 void main() {
-    vec4 maskColor = texture2D(u_mask, v_texCoords);    // Отримуємо колір з маски
-    vec4 texColor  = texture2D(u_texture, v_texCoords); // Отримуємо колір з основної текстури
+    vec4 maskColor = texture2D(u_mask, vec2(v_texCoords.x, 1.0 - v_texCoords.y)); //texture2D(u_mask, v_texCoords);
+    vec4 texColor  = texture2D(u_texture, v_texCoords);
 
-    // Використовуємо альфа-канал маски для визначення прозорості текстури
+    // Маскуємо альфу
+    //texColor.a *= maskColor.a;
+
+    //// Якщо premultiplied alpha — множимо RGB на альфу
+    ////texColor.rgb *= texColor.a;
+
+    // Застосовуємо колір від batch (v_color)
+    //gl_FragColor = texColor * v_color;
+
+    texColor.rgb *= maskColor.a; // ← важливо! множимо кольори, щоб приглушити їх на прозорих ділянках маски
     texColor.a *= maskColor.a;
 
-    gl_FragColor = v_color * texColor;  // Повертаємо фінальний колір з урахуванням альфа-каналу групи
+    gl_FragColor = texColor * v_color;
 }

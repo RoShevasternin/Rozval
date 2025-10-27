@@ -1,9 +1,6 @@
 package com.lewydo.rozval.game.utils.advanced.preRenderGroup
 
-import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.GL20
-import com.badlogic.gdx.graphics.OrthographicCamera
-import com.badlogic.gdx.graphics.Pixmap
+import com.badlogic.gdx.graphics.*
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.glutils.FrameBuffer
@@ -28,14 +25,19 @@ abstract class PreRenderableGroup: AdvancedGroup(), PreRenderable {
 
     private val fboPreRender: PreRenderMethods = getPreRenderMethods()
 
+    override fun addActorsOnGroup() {
+        createFrameBuffer()
+    }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
         if (batch == null) throw Exception("Error draw: ${this::class.simpleName}")
 
+        batch.setColor(color.r, color.g, color.b, 1f)
+
         batch.end()
         batch.begin()
 
-        //batch.setBlendFunction(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA)
+        batch.setBlendFunction(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA)
 
         batch.draw(
             textureResult,
@@ -48,7 +50,7 @@ abstract class PreRenderableGroup: AdvancedGroup(), PreRenderable {
 
         batch.end()
         batch.begin()
-        //batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA)
+        batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA)
     }
 
     override fun dispose() {
@@ -70,7 +72,9 @@ abstract class PreRenderableGroup: AdvancedGroup(), PreRenderable {
 
         /** RENDER fboGroup - Рендеримо в fboGroup */
         fboGroup!!.beginAdvanced(batch)
+        //batch.shader = shaderProgram
         batch.setBlendFunctionSeparate(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA, GL20.GL_ONE, GL20.GL_ONE)
+        //batch.setBlendFunction(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA)
 
         batch.withMatrix(camera.combined, identityMatrix) {
             fboPreRender.renderFboGroup(batch, parentAlpha)
@@ -82,6 +86,7 @@ abstract class PreRenderableGroup: AdvancedGroup(), PreRenderable {
 
         /** RENDER fboResult - Рендеримо в fboResult */
         fboResult!!.beginAdvanced(batch)
+        //batch.shader = shaderProgram
         batch.setBlendFunction(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA)
 
         batch.withMatrix(camera.combined, identityMatrix) {
@@ -97,16 +102,7 @@ abstract class PreRenderableGroup: AdvancedGroup(), PreRenderable {
         children.begin()
         for (i in 0 until children.size) {
             val child = children[i]
-            renderPreRenderables(child, batch, 1f)
-        }
-        children.end()
-    }
-
-    protected fun drawChildrenSimple(batch: Batch, parentAlpha: Float) {
-        children.begin()
-        for (i in 0 until children.size) {
-            val child = children[i]
-            if (child.isVisible) child.draw(batch, parentAlpha)
+            renderPreRenderables(child, batch, stage.root.color.a)
         }
         children.end()
     }
@@ -121,6 +117,9 @@ abstract class PreRenderableGroup: AdvancedGroup(), PreRenderable {
 
         textureGroup  = TextureRegion(fboGroup!!.colorBufferTexture)
         textureResult = TextureRegion(fboResult!!.colorBufferTexture)
+
+        textureGroup!!.texture.setWrap(Texture.TextureWrap.ClampToEdge, Texture.TextureWrap.ClampToEdge)
+        textureResult!!.texture.setWrap(Texture.TextureWrap.ClampToEdge, Texture.TextureWrap.ClampToEdge)
 
         textureGroup!!.flip(false, true)
         textureResult!!.flip(false, true)
