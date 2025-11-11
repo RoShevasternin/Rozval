@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.lewydo.rozval.game.actors.mask.AOldMask
 import com.lewydo.rozval.game.utils.advanced.AdvancedGroup
 import com.lewydo.rozval.game.utils.advanced.AdvancedScreen
+import com.lewydo.rozval.game.utils.gdxGame
 import com.lewydo.rozval.game.utils.runGDX
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -14,10 +15,10 @@ class AProgress(override val screen: AdvancedScreen): AdvancedGroup() {
 
     private val LENGTH = 719f
 
-    private val backgroundImage = Image(screen.game.assetsAll.progress_background)
-    private val progressImage   = Image(screen.game.assetsAll.progress_progress)
-    private val armImage        = Image(screen.game.assetsAll.progress_arm)
-    private val mask            = AOldMask(screen, screen.game.assetsAll.PROGRESS_MASK, alphaHeight = 700)
+    private val backgroundImage = Image(gdxGame.assetsAll.progress_background)
+    private val progressImage   = Image(gdxGame.assetsAll.progress_progress)
+    private val armImage        = Image(gdxGame.assetsAll.progress_arm)
+    private val mask            = AOldMask(screen, gdxGame.assetsAll.PROGRESS_MASK, alphaHeight = 700)
 
     private val onePercentY = LENGTH / 100f
 

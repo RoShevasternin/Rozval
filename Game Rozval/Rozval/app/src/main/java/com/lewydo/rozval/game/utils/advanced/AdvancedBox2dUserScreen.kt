@@ -12,6 +12,7 @@ import com.lewydo.rozval.game.box2d.BodyId
 import com.lewydo.rozval.game.box2d.WorldUtil
 import com.lewydo.rozval.game.box2d.bodies.standart.BStatic
 import com.lewydo.rozval.game.utils.currentTimeMinus
+import com.lewydo.rozval.game.utils.gdxGame
 import com.lewydo.rozval.game.utils.scaledToB2
 import com.lewydo.rozval.util.log
 
@@ -125,13 +126,13 @@ abstract class AdvancedBox2dUserScreen: AdvancedBox2dScreen(WorldUtil()) {
 
         private fun playSound_TouchDown() {
             if (currentTimeMinus(timeTouchDown) >= 202) {
-                game.soundUtil.apply { play(touch) }
+                gdxGame.soundUtil.apply { play(touch) }
                 timeTouchDown = System.currentTimeMillis()
             }
         }
 
         private fun playSound_TouchUp() {
-            if (currentTimeMinus(timeTouchDown) >= 405) game.soundUtil.apply { play(touch) }
+            if (currentTimeMinus(timeTouchDown) >= 405) gdxGame.soundUtil.apply { play(touch) }
         }
 
     }

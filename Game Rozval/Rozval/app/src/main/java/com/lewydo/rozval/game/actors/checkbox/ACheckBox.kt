@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.lewydo.rozval.game.utils.advanced.AdvancedGroup
 import com.lewydo.rozval.game.utils.advanced.AdvancedScreen
+import com.lewydo.rozval.game.utils.gdxGame
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
@@ -47,7 +48,7 @@ open class ACheckBox(
 
         override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
             touchDragged(event, x, y, pointer)
-            screen.game.soundUtil.apply { play(click) }
+            gdxGame.soundUtil.apply { play(click) }
             return true
         }
 
@@ -120,12 +121,12 @@ open class ACheckBox(
 
     fun getStyleByType(type: Type) = when(type) {
         Type.MUSIC -> ACheckBoxStyle(
-            default = screen.game.assetsAll.music_def,
-            checked = screen.game.assetsAll.music_check,
+            default = gdxGame.assetsAll.music_def,
+            checked = gdxGame.assetsAll.music_check,
         )
         Type.SOUND -> ACheckBoxStyle(
-            default = screen.game.assetsAll.sound_def,
-            checked = screen.game.assetsAll.sound_check,
+            default = gdxGame.assetsAll.sound_def,
+            checked = gdxGame.assetsAll.sound_check,
         )
     }
 

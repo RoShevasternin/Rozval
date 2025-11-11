@@ -16,6 +16,7 @@ import com.lewydo.rozval.game.utils.actor.disable
 import com.lewydo.rozval.game.utils.actor.enable
 import com.lewydo.rozval.game.utils.advanced.AdvancedGroup
 import com.lewydo.rozval.game.utils.advanced.AdvancedScreen
+import com.lewydo.rozval.game.utils.gdxGame
 
 abstract class AbstractMainPanel(final override val screen: AdvancedScreen): AdvancedGroup() {
 
@@ -24,7 +25,7 @@ abstract class AbstractMainPanel(final override val screen: AdvancedScreen): Adv
     private val parentGroup = ATmpGroup(screen)
 
     private val backgroundImg = Image(screen.drawerUtil.getRegion(GameColor.background.cpy().apply { a = 0.65f }))
-    private val panelImg      = Image(screen.game.assetsAll.PANEL)
+    private val panelImg      = Image(gdxGame.assetsAll.PANEL)
     private val musicCBox     = ACheckBox(screen, ACheckBox.Type.MUSIC)
     private val soundCBox     = ACheckBox(screen, ACheckBox.Type.SOUND)
     private val musicSettings = ASetting(screen, ASetting.Static.Type.Music).apply { color.a = 0f }

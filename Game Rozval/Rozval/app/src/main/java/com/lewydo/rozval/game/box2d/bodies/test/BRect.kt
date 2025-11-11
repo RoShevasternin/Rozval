@@ -6,6 +6,7 @@ import com.lewydo.rozval.game.actors.AImage
 import com.lewydo.rozval.game.box2d.AbstractBody
 import com.lewydo.rozval.game.utils.advanced.AdvancedBox2dScreen
 import com.lewydo.rozval.game.utils.advanced.AdvancedGroup
+import com.lewydo.rozval.game.utils.gdxGame
 
 class BRect(override val screenBox2d: AdvancedBox2dScreen): AbstractBody() {
     override val name       = "rect"
@@ -14,6 +15,6 @@ class BRect(override val screenBox2d: AdvancedBox2dScreen): AbstractBody() {
     }
     override val fixtureDef = FixtureDef()
 
-    override var actor: AdvancedGroup? = AImage(screenBox2d, screenBox2d.game.assetsAll.list_PreviewLvl.first())
+    override var actor: AdvancedGroup? = AImage(screenBox2d, gdxGame.assetsAll.list_PreviewLvl.first())
 
 }

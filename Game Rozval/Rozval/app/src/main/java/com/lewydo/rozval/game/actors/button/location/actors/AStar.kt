@@ -4,10 +4,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.lewydo.rozval.game.utils.advanced.AdvancedGroup
 import com.lewydo.rozval.game.utils.advanced.AdvancedScreen
+import com.lewydo.rozval.game.utils.gdxGame
 
 class AStar(override val screen: AdvancedScreen): AdvancedGroup() {
 
-    private val assetsAll = screen.game.assetsAll
+    private val assetsAll = gdxGame.assetsAll
 
     private val image = Image(assetsAll.star_empty)
 

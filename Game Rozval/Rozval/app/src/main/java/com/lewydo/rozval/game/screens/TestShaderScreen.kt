@@ -9,21 +9,20 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.utils.Align
-import com.lewydo.rozval.game.GDXGame
 import com.lewydo.rozval.game.actors.ATmpGroup
 import com.lewydo.rozval.game.actors.progress.AProgressDefault
-import com.lewydo.rozval.game.actors.shader.AMaskGroup
+import com.lewydo.rozval.game.actors.shader.ABlurBackGroup
 import com.lewydo.rozval.game.actors.shader.ATestShader
 import com.lewydo.rozval.game.utils.*
 import com.lewydo.rozval.game.utils.actor.animHide
-import com.lewydo.rozval.game.utils.actor.setBounds
+import com.lewydo.rozval.game.utils.actor.disable
 import com.lewydo.rozval.game.utils.advanced.AdvancedGroup
 import com.lewydo.rozval.game.utils.advanced.AdvancedScreen
 import com.lewydo.rozval.game.utils.advanced.AdvancedStage
 import com.lewydo.rozval.game.utils.font.FontParameter
 import kotlinx.coroutines.launch
 
-class TestShaderScreen(override val game: GDXGame): AdvancedScreen() {
+class TestShaderScreen: AdvancedScreen() {
 
     private val parameter = FontParameter().setCharacters(FontParameter.CharType.ALL)
     private val font60    = fontGenerator_LondrinaSolid_Regular.generateFont(parameter.setSize(60))
@@ -37,7 +36,8 @@ class TestShaderScreen(override val game: GDXGame): AdvancedScreen() {
     private val scroll   = ScrollPane(tmpGroup)
 
     override fun show() {
-        setBackBackground(drawerUtil.getRegion(Color.GRAY))
+        setBackBackground(gdxGame.assetsAll.LVL_1.region)
+        //setBackBackground(drawerUtil.getRegion(Color.GRAY))
         //setUIBackground(game.assetsAll.LVL_1.region)
         super.show()
 
@@ -69,56 +69,58 @@ class TestShaderScreen(override val game: GDXGame): AdvancedScreen() {
             setAlignment(Align.center)
         }
 
-        val person1 = Image(game.assetsLoader.builderList[3])
+        val person1 = Image(gdxGame.assetsLoader.builderList[3])
         person1.debug()
         person1.setBounds(57f, 179f, 200f, 315f)
 
-        val person2 = Image(game.assetsLoader.builderList[2])
+        val person2 = Image(gdxGame.assetsLoader.builderList[2])
         person2.debug()
-        person2.setBounds(57f, 566f, 200f, 315f)
+        person2.setBounds(0f, 0f, 200f, 315f)
+
+        val test = ATestShader(this@TestShaderScreen)
+        test.debug()
+        test.setBounds(57f, 566f, 200f, 315f)
+        test.addActor(person2)
+
+        test.setOrigin(Align.center)
+        test.addAction(Acts.forever(Acts.rotateBy(-360f, 5f)))
 
         person1.color.a = 0.5f
         person2.color.a = 0.5f
 
-        addActors(person1, person2)
-
-        val mask = AMaskGroup(this@TestShaderScreen)// gdxGame.assetsAll.MASK_CIRCLE)
-        mask.debug()
-        mask.setBounds(862f, 442f, 195f, 395f)
-        addActor(mask)
-
-        val p1 = Image(game.assetsLoader.builderList[1])
-        p1.debug()
-        p1.setBounds(0f, 60f, 200f, 315f)
-        mask.addActor(p1)
-
-//        val test2 = ATestShader(this@TestShaderScreen)
-//        test2.debug()
-//        test2.setBounds(10f, 50f, 200f, 315f)
-
-        val p2 = Image(game.assetsLoader.builderList[2])
-        p2.debug()
-        p2.setBounds(0f, 0f, 200f, 315f)
-        mask.addActor(p2)
-
-        //this.root.color.a = 0.5f
-        p1.color.a = 0.5f
-        p2.color.a = 0.5f
-
-
-
-        // TODO: Створи Оболочку клас для акторів і груп яі будуть додаваться в наші ПреРендаребл груп,
-        //  ця оболочка просто рисує дітей в ФБО ПОНЯВ
-
+        addActors(person1, test)
 
         addTest()
+
+        val agroup = ATmpGroup(this@TestShaderScreen)
+        addAndFillActor(agroup)
+        agroup.disable()
+
+        val mainTEST = ABlurBackGroup(this@TestShaderScreen, gdxGame.assetsAll.MASK_CIRCLE)//,game.assetsLoader.builderList[2])
+        mainTEST.debug()
+        mainTEST.setBounds(155f, 28f, 1209f, 693f)
+        agroup.addActor(mainTEST)
+
+        val testGroup = ATmpGroup(this@TestShaderScreen)
+        testGroup.debug()
+        testGroup.setBounds(1063f, 285f, 200f, 315f)
+        addActor(testGroup)
+
+        val p1 = Image(gdxGame.assetsLoader.builderList[3])
+        p1.debug()
+        p1.setBounds(0f, 0f, 200f, 315f)
+        testGroup.addActor(p1)
+
+        val p2 = Image(gdxGame.assetsLoader.builderList[2])
+        p2.debug()
+        p2.setBounds(10f, 5f, 200f, 315f)
+        testGroup.addActor(p2)
 
         coroutine?.launch {
             progress.progressPercentFlow.collect {
                 p1.x = it * 3
                 p2.x = -it * 3
-
-                //test.x = it * 3
+                mainTEST.radiusBlur = it
             }
         }
 
@@ -133,20 +135,20 @@ class TestShaderScreen(override val game: GDXGame): AdvancedScreen() {
 
         val test2 = ATestShader(this@TestShaderScreen)
         test2.debug()
-        test2.setBounds(0f, 5f, 200f, 315f)
+        test2.setBounds(10f, 5f, 200f, 315f)
 
         addActor(test)
         //tmpGroup.addActor(test)
 
-        val p1 = Image(game.assetsLoader.builderList[1])
+        val p1 = Image(gdxGame.assetsLoader.builderList[3])
         p1.debug()
         p1.setSize(200f, 315f)
 
-        val p2 = Image(game.assetsLoader.builderList[2])
+        val p2 = Image(gdxGame.assetsLoader.builderList[2])
         p2.debug()
         p2.setSize(200f, 315f)
 
-        val p3 = Image(game.assetsLoader.builderList[3])
+        val p3 = Image(gdxGame.assetsLoader.builderList[1])
         p3.debug()
         p3.setSize(200f, 315f)
 
@@ -162,8 +164,8 @@ class TestShaderScreen(override val game: GDXGame): AdvancedScreen() {
 
         coroutine?.launch {
             progress.progressPercentFlow.collect {
-                p1.x = it * 3
-                p2.x = -it * 3
+                //p1.x = it * 3
+                //p2.x = -it * 3
 
                 //test.x = it * 3
             }

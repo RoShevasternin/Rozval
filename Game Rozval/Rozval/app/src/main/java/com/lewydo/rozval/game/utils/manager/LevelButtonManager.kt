@@ -9,6 +9,7 @@ import com.lewydo.rozval.game.data.Level
 import com.lewydo.rozval.game.utils.GameColor
 import com.lewydo.rozval.game.utils.advanced.AdvancedScreen
 import com.lewydo.rozval.game.utils.font.FontParameter
+import com.lewydo.rozval.game.utils.gdxGame
 import kotlinx.coroutines.launch
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -23,9 +24,9 @@ class LevelButtonManager(val screen: AdvancedScreen) {
 
     private val labelStyle29 = LabelStyle(font29, GameColor.black)
 
-    private val starCount = screen.game.ds_star.flow.value
-    private val keyCount  = screen.game.ds_key.flow.value
-    private val locations = screen.game.ds_Location.flow.value
+    private val starCount = gdxGame.ds_star.flow.value
+    private val keyCount  = gdxGame.ds_key.flow.value
+    private val locations = gdxGame.ds_Location.flow.value
 
     private val buttonsList     = mutableListOf<AbstractLevelButton>()
     private val isButtonOpenKey = AtomicBoolean(false)
@@ -87,7 +88,7 @@ class LevelButtonManager(val screen: AdvancedScreen) {
 
     private fun collectKey() {
         screen.coroutine?.launch {
-            screen.game.ds_key.flow.collect { keyCount ->
+            gdxGame.ds_key.flow.collect { keyCount ->
                 listAllLevelButton.onEach { btn ->
                     if(btn is ALockStarKeyLevelButton) {
                         if (keyCount < btn.necessaryKeys) btn.disableOfKey()

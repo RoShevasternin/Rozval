@@ -5,13 +5,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.utils.Align
 import com.lewydo.rozval.game.utils.advanced.AdvancedGroup
 import com.lewydo.rozval.game.utils.advanced.AdvancedScreen
+import com.lewydo.rozval.game.utils.gdxGame
 import com.lewydo.rozval.game.utils.runGDX
 import kotlinx.coroutines.launch
 
 class AKeyCounter(override val screen: AdvancedScreen, labelStyle: Label.LabelStyle): AdvancedGroup() {
 
-    private val keyImg = Image(screen.game.assetsAll.key_fill)
-    private val keyLbl = Label(screen.game.ds_key.flow.value.toString(), labelStyle)
+    private val keyImg = Image(gdxGame.assetsAll.key_fill)
+    private val keyLbl = Label(gdxGame.ds_key.flow.value.toString(), labelStyle)
 
     override fun addActorsOnGroup() {
         addActors(keyImg, keyLbl)
@@ -28,7 +29,7 @@ class AKeyCounter(override val screen: AdvancedScreen, labelStyle: Label.LabelSt
 
     private fun collectKeys() {
         coroutine?.launch {
-            screen.game.ds_key.flow.collect { key ->
+            gdxGame.ds_key.flow.collect { key ->
                 runGDX { keyLbl.setText(key) }
             }
         }

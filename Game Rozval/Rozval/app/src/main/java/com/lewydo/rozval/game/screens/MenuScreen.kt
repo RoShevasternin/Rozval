@@ -5,8 +5,9 @@ import com.lewydo.rozval.game.actors.main.AMainMenu
 import com.lewydo.rozval.game.utils.Block
 import com.lewydo.rozval.game.utils.advanced.AdvancedMainScreen
 import com.lewydo.rozval.game.utils.advanced.AdvancedStage
+import com.lewydo.rozval.game.utils.gdxGame
 
-class MenuScreen(override val game: GDXGame): AdvancedMainScreen() {
+class MenuScreen: AdvancedMainScreen() {
 
     companion object {
         var LVL_CLICK = 0
@@ -31,10 +32,10 @@ class MenuScreen(override val game: GDXGame): AdvancedMainScreen() {
         aMain.apply {
             availableLevelBtnBlock = {
                 LVL_CLICK = it
-                hideScreen { game.navigationManager.navigate(GameScreen::class.java.name, MenuScreen::class.java.name) }
+                hideScreen { gdxGame.navigationManager.navigate(GameScreen::class.java.name, MenuScreen::class.java.name) }
             }
 
-            mainPanel.exitBtnBlock      = { hideScreen { game.navigationManager.exit() } }
+            mainPanel.exitBtnBlock      = { hideScreen { gdxGame.navigationManager.exit() } }
             mainPanel.bonusGameBtnBlock = { /*hideScreen { game.navigationManager.exit() }*/ }
         }
     }

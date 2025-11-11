@@ -5,12 +5,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.utils.Align
 import com.lewydo.rozval.game.utils.advanced.AdvancedGroup
 import com.lewydo.rozval.game.utils.advanced.AdvancedScreen
+import com.lewydo.rozval.game.utils.gdxGame
 import com.lewydo.rozval.game.utils.runGDX
 import kotlinx.coroutines.launch
 
 class ALvLCounter(override val screen: AdvancedScreen, labelStyle: Label.LabelStyle, lvl: Int): AdvancedGroup() {
 
-    private val lvlImg = Image(screen.game.assetsAll.lvl)
+    private val lvlImg = Image(gdxGame.assetsAll.lvl)
     private val lvlLbl = Label(lvl.toString(), labelStyle)
 
     override fun addActorsOnGroup() {

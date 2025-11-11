@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.Manifold
 import com.badlogic.gdx.utils.Array
 import com.lewydo.rozval.game.manager.util.SoundUtil
 import com.lewydo.rozval.game.utils.currentTimeMinus
+import com.lewydo.rozval.game.utils.gdxGame
 import com.lewydo.rozval.util.log
 
 class WorldContactListener: ContactListener {
@@ -71,7 +72,7 @@ class WorldContactListener: ContactListener {
         tmpArray[0] = bodyA
         tmpArray[1] = bodyB
 
-        soundUtil = bodyA.screenBox2d.game.soundUtil
+        soundUtil = gdxGame.soundUtil
 
         if (tmpArray.all { it.fixtureDef.isSensor.not() }) {
             when {

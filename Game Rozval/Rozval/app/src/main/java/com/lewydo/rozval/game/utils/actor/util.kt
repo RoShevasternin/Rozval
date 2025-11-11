@@ -1,9 +1,9 @@
 package com.lewydo.rozval.game.utils.actor
 
-import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Actor
+import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.Touchable
@@ -14,7 +14,6 @@ import com.lewydo.rozval.game.actors.button.AButton
 import com.lewydo.rozval.game.manager.util.SoundUtil
 import com.lewydo.rozval.game.utils.Acts
 import com.lewydo.rozval.game.utils.Layout
-import com.lewydo.rozval.game.utils.advanced.AdvancedGroup
 
 fun Actor.setOnClickListener(soundUtil: SoundUtil? = null, block: (Actor) -> Unit) {
     addListener(object : InputListener() {
@@ -37,6 +36,18 @@ fun Actor.setOnClickListener(soundUtil: SoundUtil? = null, block: (Actor) -> Uni
             }
         }
     })
+}
+
+fun Actor.getTopParent(root: Group): Group {
+    var top = this.parent
+
+    if (top == root) return root
+
+    while (top.parent != root) {
+        top = top.parent
+    }
+
+    return top
 }
 
 fun Actor.disable() = when(this) {

@@ -23,7 +23,7 @@ abstract class PreRenderableGroup: AdvancedGroup(), PreRenderable {
 
     protected var camera = OrthographicCamera()
 
-    private val fboPreRender: PreRenderMethods = getPreRenderMethods()
+    private val preRenderMethod: PreRenderMethods = getPreRenderMethods()
 
     override fun addActorsOnGroup() {
         createFrameBuffer()
@@ -72,25 +72,22 @@ abstract class PreRenderableGroup: AdvancedGroup(), PreRenderable {
 
         /** RENDER fboGroup - Рендеримо в fboGroup */
         fboGroup!!.beginAdvanced(batch)
-        //batch.shader = shaderProgram
-        batch.setBlendFunctionSeparate(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA, GL20.GL_ONE, GL20.GL_ONE)
-        //batch.setBlendFunction(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA)
+        batch.setBlendFunctionSeparate(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA, GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA)
 
         batch.withMatrix(camera.combined, identityMatrix) {
-            fboPreRender.renderFboGroup(batch, parentAlpha)
+            preRenderMethod.renderFboGroup(batch, parentAlpha)
         }
         fboGroup!!.endAdvanced(batch)
 
         /** RENDER FBO - Рендеримо в інші FrameBuffer */
-        fboPreRender.applyEffect(batch, parentAlpha)
+        preRenderMethod.applyEffect(batch, parentAlpha)
 
         /** RENDER fboResult - Рендеримо в fboResult */
         fboResult!!.beginAdvanced(batch)
-        //batch.shader = shaderProgram
         batch.setBlendFunction(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA)
 
         batch.withMatrix(camera.combined, identityMatrix) {
-            fboPreRender.renderFboResult(batch, parentAlpha)
+            preRenderMethod.renderFboResult(batch, parentAlpha)
         }
         fboResult!!.endAdvanced(batch)
 
@@ -117,9 +114,6 @@ abstract class PreRenderableGroup: AdvancedGroup(), PreRenderable {
 
         textureGroup  = TextureRegion(fboGroup!!.colorBufferTexture)
         textureResult = TextureRegion(fboResult!!.colorBufferTexture)
-
-        textureGroup!!.texture.setWrap(Texture.TextureWrap.ClampToEdge, Texture.TextureWrap.ClampToEdge)
-        textureResult!!.texture.setWrap(Texture.TextureWrap.ClampToEdge, Texture.TextureWrap.ClampToEdge)
 
         textureGroup!!.flip(false, true)
         textureResult!!.flip(false, true)

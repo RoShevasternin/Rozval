@@ -11,13 +11,12 @@ import com.lewydo.rozval.game.utils.actor.animHide
 import com.lewydo.rozval.game.utils.advanced.AdvancedBox2dUserScreen
 import com.lewydo.rozval.game.utils.advanced.AdvancedGroup
 import com.lewydo.rozval.game.utils.advanced.AdvancedStage
+import com.lewydo.rozval.game.utils.gdxGame
 import com.lewydo.rozval.game.utils.region
 import com.lewydo.rozval.game.utils.runGDX
 import kotlinx.coroutines.launch
 
-class TestBox2dScreen(override val game: GDXGame): AdvancedBox2dUserScreen() {
-
-    private val assetsAll = game.assetsAll
+class TestBox2dScreen(): AdvancedBox2dUserScreen() {
 
     private val bDynamic = BDynamic(this)
     private val bRect    = BRect(this)
@@ -25,7 +24,7 @@ class TestBox2dScreen(override val game: GDXGame): AdvancedBox2dUserScreen() {
     private val progress = AProgressDefault(this)
 
     override fun show() {
-        setBackBackground(game.assetsAll.LVL_1.region)
+        setBackBackground(gdxGame.assetsAll.LVL_1.region)
         super.show()
     }
 
@@ -46,7 +45,7 @@ class TestBox2dScreen(override val game: GDXGame): AdvancedBox2dUserScreen() {
                 addActor(progress)
                 progress.setBounds(420f, 946f, 1080f, 80f)
 
-                val img0 = Image(game.assetsLoader.builderList.first())
+                val img0 = Image(gdxGame.assetsLoader.builderList.first())
                 addActor(img0)
                 img0.debug()
                 img0.setBounds(57f, 179f, 200f, 315f)
@@ -62,7 +61,7 @@ class TestBox2dScreen(override val game: GDXGame): AdvancedBox2dUserScreen() {
                     }
                 }
 
-                val img = Image(game.assetsLoader.builderList[2])
+                val img = Image(gdxGame.assetsLoader.builderList[2])
                 addActor(img)
                 img.debug()
                 img.setBounds(57f, 566f, 200f, 315f)

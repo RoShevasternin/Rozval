@@ -5,13 +5,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.utils.Align
 import com.lewydo.rozval.game.utils.advanced.AdvancedGroup
 import com.lewydo.rozval.game.utils.advanced.AdvancedScreen
+import com.lewydo.rozval.game.utils.gdxGame
 import com.lewydo.rozval.game.utils.runGDX
 import kotlinx.coroutines.launch
 
 class AStarCounter(override val screen: AdvancedScreen, labelStyle: Label.LabelStyle): AdvancedGroup() {
 
-    private val starImg = Image(screen.game.assetsAll.star_fill)
-    private val starLbl = Label(screen.game.ds_star.flow.value.toString(), labelStyle)
+    private val starImg = Image(gdxGame.assetsAll.star_fill)
+    private val starLbl = Label(gdxGame.ds_star.flow.value.toString(), labelStyle)
 
     override fun addActorsOnGroup() {
         addActors(starImg, starLbl)
@@ -28,7 +29,7 @@ class AStarCounter(override val screen: AdvancedScreen, labelStyle: Label.LabelS
 
     private fun collectStars() {
         coroutine?.launch {
-            screen.game.ds_star.flow.collect { star ->
+            gdxGame.ds_star.flow.collect { star ->
                 runGDX { starLbl.setText(star) }
             }
         }

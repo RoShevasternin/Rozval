@@ -10,6 +10,7 @@ import com.lewydo.rozval.game.actors.autoLayout.AutoLayout
 import com.lewydo.rozval.game.utils.GameColor
 import com.lewydo.rozval.game.utils.SizeScaler
 import com.lewydo.rozval.game.utils.advanced.AdvancedScreen
+import com.lewydo.rozval.game.utils.gdxGame
 import com.lewydo.rozval.game.utils.runGDX
 import kotlinx.coroutines.launch
 
@@ -26,7 +27,7 @@ class AKeysNecessary(
 
     override val sizeScaler = SizeScaler(SizeScaler.Axis.Y,30f)
 
-    private val assetsAll = screen.game.assetsAll
+    private val assetsAll = gdxGame.assetsAll
 
 
     private val keyImg      = Image(assetsAll.key_grey)
@@ -66,7 +67,7 @@ class AKeysNecessary(
 
     private fun collectKeys() {
         coroutine?.launch {
-            screen.game.ds_key.flow.collect { key ->
+            gdxGame.ds_key.flow.collect { key ->
                 runGDX { keyCountLbl.setText("${getNecessaryKeyCount(key)}/$necessaryKeys") }
             }
         }

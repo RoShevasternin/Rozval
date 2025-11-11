@@ -13,6 +13,7 @@ import com.lewydo.rozval.game.utils.actor.animHide
 import com.lewydo.rozval.game.utils.actor.animShow
 import com.lewydo.rozval.game.utils.advanced.AdvancedGroup
 import com.lewydo.rozval.game.utils.advanced.AdvancedScreen
+import com.lewydo.rozval.game.utils.gdxGame
 import com.lewydo.rozval.game.utils.region
 
 open class AButton(
@@ -58,7 +59,7 @@ open class AButton(
             touchDownBlock(x, y)
             touchDragged(event, x, y, pointer)
 
-            screen.game.soundUtil.apply { play(click) }
+            gdxGame.soundUtil.apply { play(click) }
 
             event?.stop()
             return true
@@ -160,41 +161,41 @@ open class AButton(
             disabled = TextureRegionDrawable(TextureEmpty.region),
         )
         Type.Exit -> AButtonStyle(
-            default = TextureRegionDrawable(screen.game.assetsAll.exit_def),
-            pressed = TextureRegionDrawable(screen.game.assetsAll.exit_press),
-            disabled = TextureRegionDrawable(screen.game.assetsAll.exit_press),
+            default = TextureRegionDrawable(gdxGame.assetsAll.exit_def),
+            pressed = TextureRegionDrawable(gdxGame.assetsAll.exit_press),
+            disabled = TextureRegionDrawable(gdxGame.assetsAll.exit_press),
         )
         Type.Menu -> AButtonStyle(
-            default = TextureRegionDrawable(screen.game.assetsAll.menu_def),
-            pressed = TextureRegionDrawable(screen.game.assetsAll.menu_press),
-            disabled = TextureRegionDrawable(screen.game.assetsAll.menu_press),
+            default = TextureRegionDrawable(gdxGame.assetsAll.menu_def),
+            pressed = TextureRegionDrawable(gdxGame.assetsAll.menu_press),
+            disabled = TextureRegionDrawable(gdxGame.assetsAll.menu_press),
         )
         Type.Apply -> AButtonStyle(
-            default = TextureRegionDrawable(screen.game.assetsAll.apply_def),
-            pressed = TextureRegionDrawable(screen.game.assetsAll.apply_press),
-            disabled = TextureRegionDrawable(screen.game.assetsAll.apply_press),
+            default = TextureRegionDrawable(gdxGame.assetsAll.apply_def),
+            pressed = TextureRegionDrawable(gdxGame.assetsAll.apply_press),
+            disabled = TextureRegionDrawable(gdxGame.assetsAll.apply_press),
         )
         Type.BonusGame -> AButtonStyle(
-            default = TextureRegionDrawable(screen.game.assetsAll.bonus_game_def),
-            pressed = TextureRegionDrawable(screen.game.assetsAll.bonus_game_press),
-            disabled = TextureRegionDrawable(screen.game.assetsAll.bonus_game_press),
+            default = TextureRegionDrawable(gdxGame.assetsAll.bonus_game_def),
+            pressed = TextureRegionDrawable(gdxGame.assetsAll.bonus_game_press),
+            disabled = TextureRegionDrawable(gdxGame.assetsAll.bonus_game_press),
         )
         Type.Lock -> AButtonStyle(
-            default = TextureRegionDrawable(screen.game.assetsAll.lock_def),
-            pressed = TextureRegionDrawable(screen.game.assetsAll.lock_press),
-            disabled = TextureRegionDrawable(screen.game.assetsAll.lock_def),
+            default = TextureRegionDrawable(gdxGame.assetsAll.lock_def),
+            pressed = TextureRegionDrawable(gdxGame.assetsAll.lock_press),
+            disabled = TextureRegionDrawable(gdxGame.assetsAll.lock_def),
         )
         Type.SeparatorOpenOfKey -> AButtonStyle(
-            default = TextureRegionDrawable(screen.game.assetsAll.LEVEL_SEPARATOR_LOCK_DEF),
-            pressed = TextureRegionDrawable(screen.game.assetsAll.LEVEL_SEPARATOR_LOCK_PRESS),
-            disabled = TextureRegionDrawable(screen.game.assetsAll.LEVEL_SEPARATOR_LOCK_DEF),
+            default = TextureRegionDrawable(gdxGame.assetsAll.LEVEL_SEPARATOR_LOCK_DEF),
+            pressed = TextureRegionDrawable(gdxGame.assetsAll.LEVEL_SEPARATOR_LOCK_PRESS),
+            disabled = TextureRegionDrawable(gdxGame.assetsAll.LEVEL_SEPARATOR_LOCK_DEF),
         )
 
 
         Type.LevelOpenOfKey -> AButtonStyle(
-            default = NinePatchDrawable(screen.game.assetsAll.lvl_btn_dis),
-            pressed = NinePatchDrawable(screen.game.assetsAll.lvl_btn_gold),
-            disabled = NinePatchDrawable(screen.game.assetsAll.lvl_btn_dis),
+            default = NinePatchDrawable(gdxGame.assetsAll.lvl_btn_dis),
+            pressed = NinePatchDrawable(gdxGame.assetsAll.lvl_btn_gold),
+            disabled = NinePatchDrawable(gdxGame.assetsAll.lvl_btn_dis),
         )
     }
 

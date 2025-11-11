@@ -11,6 +11,7 @@ import com.lewydo.rozval.game.utils.actor.animShow
 import com.lewydo.rozval.game.utils.actor.disable
 import com.lewydo.rozval.game.utils.actor.enable
 import com.lewydo.rozval.game.utils.advanced.AdvancedScreen
+import com.lewydo.rozval.game.utils.gdxGame
 
 class ALockStarKeyLevelButton(
     override val screen    : AdvancedScreen,
@@ -75,7 +76,7 @@ class ALockStarKeyLevelButton(
 
         override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
             touchDragged(event, x, y, pointer)
-            screen.game.soundUtil.apply { play(click) }
+            gdxGame.soundUtil.apply { play(click) }
             setSaturationPreview(1f)
 
             event?.stop()

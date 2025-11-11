@@ -25,8 +25,6 @@ abstract class AdvancedScreen(
     val HEIGHT: Float = HEIGHT_UI
 ) : ScreenAdapter(), AdvancedInputProcessor {
 
-    abstract val game: GDXGame
-
     val viewportBack by lazy { ScreenViewport() }
     val stageBack    by lazy { AdvancedStage(viewportBack) }
 
@@ -83,8 +81,8 @@ abstract class AdvancedScreen(
     override fun keyDown(keycode: Int): Boolean {
         when(keycode) {
             Input.Keys.BACK -> {
-                if (game.navigationManager.isBackStackEmpty()) game.navigationManager.exit()
-                else hideScreen { game.navigationManager.back() }
+                if (gdxGame.navigationManager.isBackStackEmpty()) gdxGame.navigationManager.exit()
+                else hideScreen { gdxGame.navigationManager.back() }
             }
         }
         return true

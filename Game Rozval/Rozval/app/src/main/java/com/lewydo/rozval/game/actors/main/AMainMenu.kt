@@ -15,6 +15,7 @@ import com.lewydo.rozval.game.utils.actor.animDelay
 import com.lewydo.rozval.game.utils.actor.animHide
 import com.lewydo.rozval.game.utils.actor.animShow
 import com.lewydo.rozval.game.utils.advanced.AdvancedMainGroup
+import com.lewydo.rozval.game.utils.gdxGame
 import com.lewydo.rozval.game.utils.manager.LevelButtonManager
 import com.lewydo.rozval.game.utils.manager.LocationManager
 import kotlinx.coroutines.launch
@@ -26,8 +27,8 @@ class AMainMenu(override val screen: MenuScreen): AdvancedMainGroup() {
 
     // Field
     private val locationManager = LocationManager(screen)
-    private val locationsUtil   = screen.game.ds_Location
-    private val keyUtil         = screen.game.ds_key
+    private val locationsUtil   = gdxGame.ds_Location
+    private val keyUtil         = gdxGame.ds_key
 
     var availableLevelBtnBlock: (Int) -> Unit = {}
 

@@ -9,6 +9,7 @@ import com.lewydo.rozval.game.actors.autoLayout.AHorizontalGroup
 import com.lewydo.rozval.game.actors.autoLayout.AutoLayout
 import com.lewydo.rozval.game.utils.SizeScaler
 import com.lewydo.rozval.game.utils.advanced.AdvancedScreen
+import com.lewydo.rozval.game.utils.gdxGame
 
 class AStarsNecessary(
     override val screen: AdvancedScreen,
@@ -23,7 +24,7 @@ class AStarsNecessary(
 
     override val sizeScaler = SizeScaler(SizeScaler.Axis.Y, 30f)
 
-    private val assetsAll = screen.game.assetsAll
+    private val assetsAll = gdxGame.assetsAll
 
     private val starImg      = Image(assetsAll.star_grey)
     private val starCountLbl = Label(starCount.toString(), labelStyle)

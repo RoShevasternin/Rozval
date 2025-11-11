@@ -9,6 +9,7 @@ import com.lewydo.rozval.game.utils.Block
 import com.lewydo.rozval.game.utils.actor.disable
 import com.lewydo.rozval.game.utils.actor.setOnClickListener
 import com.lewydo.rozval.game.utils.advanced.AdvancedScreen
+import com.lewydo.rozval.game.utils.gdxGame
 
 class AAvailableLevelButton(
     override val screen    : AdvancedScreen,
@@ -16,7 +17,7 @@ class AAvailableLevelButton(
     override val labelStyle: Label.LabelStyle,
 ) : AbstractLevelButton() {
 
-    private val assetsAll = screen.game.assetsAll
+    private val assetsAll = gdxGame.assetsAll
 
     private val levelBtnStyle = AButton.AButtonStyle(
         default  = TextureRegionDrawable(assetsAll.list_LvlBtnDef[level-1]),

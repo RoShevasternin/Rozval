@@ -1,24 +1,21 @@
 package com.lewydo.rozval.game.screens
 
-import com.lewydo.rozval.game.GDXGame
 import com.lewydo.rozval.game.actors.main.AMainLoader
 import com.lewydo.rozval.game.manager.MusicManager
 import com.lewydo.rozval.game.manager.ParticleEffectManager
 import com.lewydo.rozval.game.manager.SoundManager
 import com.lewydo.rozval.game.manager.SpriteManager
 import com.lewydo.rozval.game.utils.Block
-import com.lewydo.rozval.game.utils.TIME_ANIM_SCREEN
-import com.lewydo.rozval.game.utils.actor.animHide
 import com.lewydo.rozval.game.utils.advanced.AdvancedMainScreen
-import com.lewydo.rozval.game.utils.advanced.AdvancedScreen
 import com.lewydo.rozval.game.utils.advanced.AdvancedStage
+import com.lewydo.rozval.game.utils.gdxGame
 import com.lewydo.rozval.game.utils.runGDX
 import com.lewydo.rozval.util.log
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-class LoaderScreen(override val game: GDXGame) : AdvancedMainScreen() {
+class LoaderScreen : AdvancedMainScreen() {
 
     private val progressFlow     = MutableStateFlow(0f)
     private var isFinishLoading  = false
@@ -57,49 +54,49 @@ class LoaderScreen(override val game: GDXGame) : AdvancedMainScreen() {
     // Logic ------------------------------------------------------------------------
 
     private fun loadSplashAssets() {
-        with(game.spriteManager) {
+        with(gdxGame.spriteManager) {
             loadableAtlasList = mutableListOf(SpriteManager.EnumAtlas.LOADER.data)
             loadAtlas()
         }
-        game.assetManager.finishLoading()
-        game.spriteManager.initAtlas()
+        gdxGame.assetManager.finishLoading()
+        gdxGame.spriteManager.initAtlas()
     }
 
     private fun loadAssets() {
-        with(game.spriteManager) {
+        with(gdxGame.spriteManager) {
             loadableAtlasList = SpriteManager.EnumAtlas.entries.map { it.data }.toMutableList()
             loadAtlas()
             loadableTexturesList = SpriteManager.EnumTexture.entries.map { it.data }.toMutableList()
             loadTexture()
         }
-        with(game.musicManager) {
+        with(gdxGame.musicManager) {
             loadableMusicList = MusicManager.EnumMusic.entries.map { it.data }.toMutableList()
             load()
         }
-        with(game.soundManager) {
+        with(gdxGame.soundManager) {
             loadableSoundList = SoundManager.EnumSound.entries.map { it.data }.toMutableList()
             load()
         }
-        with(game.particleEffectManager) {
+        with(gdxGame.particleEffectManager) {
             loadableParticleEffectList = ParticleEffectManager.EnumParticleEffect.entries.map { it.data }.toMutableList()
             load()
         }
     }
 
     private fun initAssets() {
-        game.spriteManager.initAtlasAndTexture()
-        game.musicManager.init()
-        game.soundManager.init()
-        game.particleEffectManager.init()
+        gdxGame.spriteManager.initAtlasAndTexture()
+        gdxGame.musicManager.init()
+        gdxGame.soundManager.init()
+        gdxGame.particleEffectManager.init()
     }
 
     private fun loadingAssets() {
         if (isFinishLoading.not()) {
-            if (game.assetManager.update(16)) {
+            if (gdxGame.assetManager.update(16)) {
                 isFinishLoading = true
                 initAssets()
             }
-            progressFlow.value = game.assetManager.progress
+            progressFlow.value = gdxGame.assetManager.progress
         }
     }
 
@@ -130,7 +127,7 @@ class LoaderScreen(override val game: GDXGame) : AdvancedMainScreen() {
 //            } }
 
             hideScreen {
-                game.navigationManager.navigate(TestShaderScreen::class.java.name)//   MenuScreen::class.java.name)
+                gdxGame.navigationManager.navigate(TestShaderScreen::class.java.name)//   MenuScreen::class.java.name)
             }
         }
     }

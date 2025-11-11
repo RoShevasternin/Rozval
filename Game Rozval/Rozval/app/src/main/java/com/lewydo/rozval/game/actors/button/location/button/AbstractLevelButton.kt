@@ -6,6 +6,7 @@ import com.lewydo.rozval.game.actors.ALabel
 import com.lewydo.rozval.game.actors.shader.ASaturationImage
 import com.lewydo.rozval.game.utils.actor.disable
 import com.lewydo.rozval.game.utils.advanced.AdvancedGroup
+import com.lewydo.rozval.game.utils.gdxGame
 
 abstract class AbstractLevelButton: AdvancedGroup() {
 
@@ -13,7 +14,7 @@ abstract class AbstractLevelButton: AdvancedGroup() {
     abstract val labelStyle: Label.LabelStyle
 
     // Actors
-    private val previewImg by lazy { ASaturationImage(screen, screen.game.assetsAll.list_PreviewLvl[level-1]) }
+    private val previewImg by lazy { ASaturationImage(screen, gdxGame.assetsAll.list_PreviewLvl[level-1]) }
     private val lvlLbl     by lazy { ALabel(screen, level.toString(), labelStyle) }
 
     override fun addActorsOnGroup() {

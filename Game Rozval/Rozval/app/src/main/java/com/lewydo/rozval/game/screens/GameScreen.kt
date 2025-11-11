@@ -10,13 +10,14 @@ import com.lewydo.rozval.game.utils.actor.animShow
 import com.lewydo.rozval.game.utils.advanced.AdvancedBox2dScreen
 import com.lewydo.rozval.game.utils.advanced.AdvancedGroup
 import com.lewydo.rozval.game.utils.advanced.AdvancedStage
+import com.lewydo.rozval.game.utils.gdxGame
 import com.lewydo.rozval.game.utils.region
 import com.lewydo.rozval.game.utils.runGDX
 import kotlinx.coroutines.launch
 
-class GameScreen(override val game: GDXGame): AdvancedBox2dScreen(WorldUtil()) {
+class GameScreen(): AdvancedBox2dScreen(WorldUtil()) {
 
-    private val assetsAll = game.assetsAll
+    private val assetsAll = gdxGame.assetsAll
 
     private val panelMenu = APanelGame(this).apply { color.a = 0f }
 
@@ -48,7 +49,7 @@ class GameScreen(override val game: GDXGame): AdvancedBox2dScreen(WorldUtil()) {
         addAndFillActor(panelMenu)
 
         panelMenu.apply {
-            mainPanel.menuBtnBlock = { hideScreen { game.navigationManager.back() } }
+            mainPanel.menuBtnBlock = { hideScreen { gdxGame.navigationManager.back() } }
         }
 
     }

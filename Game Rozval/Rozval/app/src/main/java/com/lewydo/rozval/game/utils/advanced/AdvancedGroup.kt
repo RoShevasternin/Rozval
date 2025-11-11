@@ -125,9 +125,11 @@ abstract class AdvancedGroup : WidgetGroup(), Disposable {
         children.begin()
         for (i in 0 until children.size) {
             val child = children[i]
+
             if (child.isVisible) {
-                child.draw(batch, parentAlpha)
+                child.draw(batch, parentAlpha /* * child.color.a*/)
             }
+
         }
         children.end()
 

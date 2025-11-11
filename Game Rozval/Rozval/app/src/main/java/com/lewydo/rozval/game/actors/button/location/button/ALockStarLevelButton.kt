@@ -7,6 +7,7 @@ import com.lewydo.rozval.game.actors.button.location.separator.AAvailableSeparat
 import com.lewydo.rozval.game.utils.actor.animHide
 import com.lewydo.rozval.game.utils.actor.animShow
 import com.lewydo.rozval.game.utils.advanced.AdvancedScreen
+import com.lewydo.rozval.game.utils.gdxGame
 import com.lewydo.rozval.util.log
 
 class ALockStarLevelButton(
@@ -16,7 +17,7 @@ class ALockStarLevelButton(
     necessaryStars: Int,
 ) : AbstractLevelButton() {
 
-    private val assetsAll = screen.game.assetsAll
+    private val assetsAll = gdxGame.assetsAll
 
     // Actors
     private val panelImg       = Image(assetsAll.lvl_btn_dis)

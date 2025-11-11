@@ -7,6 +7,7 @@ import com.lewydo.rozval.game.actors.button.location.separator.AbstractSeparator
 import com.lewydo.rozval.game.utils.GameColor
 import com.lewydo.rozval.game.utils.advanced.AdvancedScreen
 import com.lewydo.rozval.game.utils.font.FontParameter
+import com.lewydo.rozval.game.utils.gdxGame
 import kotlinx.coroutines.launch
 
 class LocationSeparatorButtonManager(val screen: AdvancedScreen) {
@@ -16,9 +17,9 @@ class LocationSeparatorButtonManager(val screen: AdvancedScreen) {
 
     private val labelStyle50 = LabelStyle(font50, GameColor.black)
 
-    private val starCount = screen.game.ds_star.flow.value
-    private val keyCount  = screen.game.ds_key.flow.value
-    private val locations = screen.game.ds_Location.flow.value
+    private val starCount = gdxGame.ds_star.flow.value
+    private val keyCount  = gdxGame.ds_key.flow.value
+    private val locations = gdxGame.ds_Location.flow.value
 
     private lateinit var tmpButton: AbstractSeparatorButton
 
@@ -48,7 +49,7 @@ class LocationSeparatorButtonManager(val screen: AdvancedScreen) {
 
     private fun collectKey() {
         screen.coroutine?.launch {
-            screen.game.ds_key.flow.collect { keyCount ->
+            gdxGame.ds_key.flow.collect { keyCount ->
                 listAllSeparatorButton.onEach { btn ->
                     if(btn is ALockSeparatorButton) {
                         if (keyCount < btn.necessaryKeys) btn.disableOfKey()

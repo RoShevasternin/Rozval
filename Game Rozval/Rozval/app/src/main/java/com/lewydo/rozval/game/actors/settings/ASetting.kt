@@ -8,6 +8,7 @@ import com.lewydo.rozval.game.utils.GameColor
 import com.lewydo.rozval.game.utils.advanced.AdvancedGroup
 import com.lewydo.rozval.game.utils.advanced.AdvancedScreen
 import com.lewydo.rozval.game.utils.font.FontParameter
+import com.lewydo.rozval.game.utils.gdxGame
 import com.lewydo.rozval.game.utils.runGDX
 import kotlinx.coroutines.launch
 
@@ -38,8 +39,8 @@ class ASetting(override val screen: AdvancedScreen, val type: Static.Type): Adva
         progress.apply {
             setBounds(41f, 298f, 76f, 736f)
             progressPercentFlow.value = when(type) {
-                Static.Type.Music -> screen.game.musicUtil.volumeLevelFlow.value
-                Static.Type.Sound -> screen.game.soundUtil.volumeLevel
+                Static.Type.Music -> gdxGame.musicUtil.volumeLevelFlow.value
+                Static.Type.Sound -> gdxGame.soundUtil.volumeLevel
             }
         }
     }
@@ -69,8 +70,8 @@ class ASetting(override val screen: AdvancedScreen, val type: Static.Type): Adva
                     progressLbl.setText("${it.toInt()}%")
 
                     when(type) {
-                        Static.Type.Music -> screen.game.musicUtil.volumeLevelFlow.value = it
-                        Static.Type.Sound -> screen.game.soundUtil.volumeLevel = it
+                        Static.Type.Music -> gdxGame.musicUtil.volumeLevelFlow.value = it
+                        Static.Type.Sound -> gdxGame.soundUtil.volumeLevel = it
                     }
                 }
             }

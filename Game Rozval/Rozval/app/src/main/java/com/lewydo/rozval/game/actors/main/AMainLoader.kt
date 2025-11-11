@@ -14,6 +14,7 @@ import com.lewydo.rozval.game.utils.actor.animShow
 import com.lewydo.rozval.game.utils.actor.setBounds
 import com.lewydo.rozval.game.utils.advanced.AdvancedMainGroup
 import com.lewydo.rozval.game.utils.font.FontParameter
+import com.lewydo.rozval.game.utils.gdxGame
 import com.lewydo.rozval.game.utils.Layout.Loader as LL
 
 class AMainLoader(override val screen: LoaderScreen): AdvancedMainGroup() {
@@ -21,11 +22,11 @@ class AMainLoader(override val screen: LoaderScreen): AdvancedMainGroup() {
     private val parameter = FontParameter().setCharacters(FontParameter.CharType.ALL).setSize(66)
     private val font      = screen.fontGenerator_LondrinaSolid_Regular.generateFont(parameter)
 
-    val loaderImg        = Image(screen.game.assetsLoader.loader)
+    val loaderImg        = Image(gdxGame.assetsLoader.loader)
     val loadingLbl       = Label("Loading", Label.LabelStyle(font, GameColor.white))
     val loadingPointsLbl = Label("", Label.LabelStyle(font, GameColor.white))
     val progressLbl      = Label("", Label.LabelStyle(font, GameColor.white))
-    val builderImg       = Image(screen.game.assetsLoader.builderList.random())
+    val builderImg       = Image(gdxGame.assetsLoader.builderList.random())
 
 
     override fun addActorsOnGroup() {
