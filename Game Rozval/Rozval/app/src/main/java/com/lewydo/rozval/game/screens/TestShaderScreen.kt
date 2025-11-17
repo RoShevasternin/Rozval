@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.utils.Align
 import com.lewydo.rozval.game.actors.ATmpGroup
 import com.lewydo.rozval.game.actors.progress.AProgressDefault
+import com.lewydo.rozval.game.actors.shader.ABackgroundBlurScreenShot
 import com.lewydo.rozval.game.actors.shader.ABlurBackGroup
 import com.lewydo.rozval.game.actors.shader.ATestShader
 import com.lewydo.rozval.game.utils.*
@@ -92,14 +93,14 @@ class TestShaderScreen: AdvancedScreen() {
 
         addTest()
 
-        val agroup = ATmpGroup(this@TestShaderScreen)
-        addAndFillActor(agroup)
-        agroup.disable()
+        val tmpGroupTest = ATmpGroup(this@TestShaderScreen)
+        addAndFillActor(tmpGroupTest)
+        tmpGroupTest.disable()
 
-        val mainTEST = ABlurBackGroup(this@TestShaderScreen, gdxGame.assetsAll.MASK_CIRCLE)//,game.assetsLoader.builderList[2])
+        val mainTEST = ABackgroundBlurScreenShot(this@TestShaderScreen, /*gdxGame.assetsAll.MASK_CIRCLE*/)//,game.assetsLoader.builderList[2])
         mainTEST.debug()
         mainTEST.setBounds(155f, 28f, 1209f, 693f)
-        agroup.addActor(mainTEST)
+        tmpGroupTest.addActor(mainTEST)
 
         val testGroup = ATmpGroup(this@TestShaderScreen)
         testGroup.debug()
@@ -121,6 +122,13 @@ class TestShaderScreen: AdvancedScreen() {
                 p1.x = it * 3
                 p2.x = -it * 3
                 mainTEST.radiusBlur = it
+                mainTEST.x = it * 10
+
+                if (it > 60) {
+                    mainTEST.isStaticEffect = true
+                } else {
+                    mainTEST.isStaticEffect = false
+                }
             }
         }
 

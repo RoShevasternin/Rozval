@@ -25,6 +25,9 @@ abstract class PreRenderableGroup: AdvancedGroup(), PreRenderable {
 
     private val preRenderMethod: PreRenderMethods = getPreRenderMethods()
 
+    private var staticEffectRenderCounter = 0
+    var isStaticEffect = false
+
     override fun addActorsOnGroup() {
         createFrameBuffer()
     }
@@ -61,6 +64,8 @@ abstract class PreRenderableGroup: AdvancedGroup(), PreRenderable {
     abstract fun getPreRenderMethods(): PreRenderMethods
 
     override fun preRender(batch: Batch, parentAlpha: Float) {
+        if (logicIsStaticEffect()) return
+
         if (fboGroup == null || fboResult == null) throw Exception("Error preRender: ${this::class.simpleName}")
 
         batch.end()
@@ -117,6 +122,16 @@ abstract class PreRenderableGroup: AdvancedGroup(), PreRenderable {
 
         textureGroup!!.flip(false, true)
         textureResult!!.flip(false, true)
+    }
+
+    private fun logicIsStaticEffect(): Boolean {
+        return if (isStaticEffect) {
+            staticEffectRenderCounter++
+            staticEffectRenderCounter >= 5
+        } else {
+            staticEffectRenderCounter = 0
+            false
+        }
     }
 
     protected inline fun Batch.withMatrix(newProjectionMatrix: Matrix4, newTransformMatrix: Matrix4, block: () -> Unit) {

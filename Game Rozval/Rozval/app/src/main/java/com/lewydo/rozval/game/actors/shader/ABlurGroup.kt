@@ -43,10 +43,6 @@ open class ABlurGroup(
             field = value
         }
 
-    private var staticBluerRenderCounter = 0
-
-    var isStaticBluer = false
-
     override fun addActorsOnGroup() {
         createShaders()
         createFrameBuffer()
@@ -95,13 +91,6 @@ open class ABlurGroup(
     }
 
     override fun preRender(batch: Batch, parentAlpha: Float) {
-        if (isStaticBluer) {
-            staticBluerRenderCounter++
-            if (staticBluerRenderCounter >= 5) return
-        } else {
-            staticBluerRenderCounter = 0
-        }
-
         if (shaderProgram == null ||
             fboBlurH      == null || fboBlurV == null
         ) throw kotlin.Exception("Error preRender: ${this::class.simpleName}")
