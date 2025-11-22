@@ -1,22 +1,18 @@
 package com.lewydo.rozval.game.actors.shader
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.glutils.FrameBuffer
 import com.badlogic.gdx.graphics.glutils.ShaderProgram
-import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.utils.ScreenUtils
 import com.lewydo.rozval.game.utils.advanced.AdvancedScreen
 import com.lewydo.rozval.game.utils.advanced.preRenderGroup.PreRenderMethods
 import com.lewydo.rozval.game.utils.advanced.preRenderGroup.PreRenderableGroup
 import com.lewydo.rozval.game.utils.disposeAll
-import com.lewydo.rozval.util.log
 
-open class ABlurGroup(
+open class ABlur(
     override val screen: AdvancedScreen,
     var textureRegionBlur: TextureRegion? = null,
 ): PreRenderableGroup() {

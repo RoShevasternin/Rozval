@@ -10,7 +10,7 @@
     import com.lewydo.rozval.game.utils.advanced.preRenderGroup.PreRenderableGroup
     import com.lewydo.rozval.game.utils.disposeAll
 
-    class AMaskGroup(
+    class AMask(
         override val screen: AdvancedScreen,
         private val maskTexture: Texture? = null
     ): PreRenderableGroup() {

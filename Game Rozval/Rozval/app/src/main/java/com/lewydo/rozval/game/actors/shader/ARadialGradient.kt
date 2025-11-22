@@ -8,20 +8,23 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.lewydo.rozval.game.utils.advanced.AdvancedGroup
 import com.lewydo.rozval.game.utils.advanced.AdvancedScreen
 import com.lewydo.rozval.game.utils.runGDX
-import com.lewydo.rozval.util.log
 
-class ALinearGradientGroup(
+class ARadialGradient(
     override val screen: AdvancedScreen,
     val startColor: Color,
     val endColor  : Color,
-    val angle     : Float,
-    val timeAnim  : Float = 0f,
-    val direction : Static.Direction = Static.Direction.START_END
+    val centerXPercent: Float = 0.5f,
+    val centerYPercent: Float = 0.5f,
+    val radiusXPercent : Float = 0.5f,
+    val radiusYPercent : Float = 0.5f,
+    val angle    : Float = 0f,
+    val timeAnim : Float = 0f,
+    val direction: Static.Direction = Static.Direction.START_END
 ): AdvancedGroup() {
 
     companion object {
         private var vertexShader   = Gdx.files.internal("shader/gradient/defaultVS.glsl").readString()
-        private var fragmentShader = Gdx.files.internal("shader/gradient/linearFS.glsl").readString()
+        private var fragmentShader = Gdx.files.internal("shader/gradient/radialFS.glsl").readString()
     }
 
     private var shaderProgram: ShaderProgram? = null
@@ -41,11 +44,14 @@ class ALinearGradientGroup(
 
         timeCounter()
 
-        shaderProgram!!.setUniformf("u_startColor", startColor.r, startColor.g, startColor.b)
-        shaderProgram!!.setUniformf("u_endColor", endColor.r, endColor.g, endColor.b)
-        shaderProgram!!.setUniformf("u_angle", angle)
+        shaderProgram!!.setUniformf("u_startColor", startColor.r, startColor.g, startColor.b, startColor.a)
+        shaderProgram!!.setUniformf("u_endColor", endColor.r, endColor.g, endColor.b, endColor.a)
         shaderProgram!!.setUniformf("u_time", time)
         shaderProgram!!.setUniformf("u_cycleTime", timeAnim)
+        shaderProgram!!.setUniformf("u_resolution", width, height)
+        shaderProgram!!.setUniformf("u_center", width * centerXPercent, height * centerYPercent)
+        shaderProgram!!.setUniformf("u_radius", width * radiusXPercent, width * radiusYPercent)
+        shaderProgram!!.setUniformf("u_angle", angle)
         shaderProgram!!.setUniformi("u_animate", if (timeAnim > 0f) 1 else 0)
 
         super.draw(batch, parentAlpha)

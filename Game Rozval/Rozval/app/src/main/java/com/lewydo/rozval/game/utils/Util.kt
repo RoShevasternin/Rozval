@@ -3,6 +3,7 @@ package com.lewydo.rozval.game.utils
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.InputProcessor
+import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
@@ -74,4 +75,9 @@ fun Texture.combineByCenter(texture: Texture): Texture {
     texture.dispose()
 
     return textureResult
+}
+
+fun captureScreenShot(texture: TextureRegion, x: Int, y: Int, w: Int, h: Int) {
+    Gdx.gl.glBindTexture(GL20.GL_TEXTURE_2D, texture.texture.textureObjectHandle)
+    Gdx.gl20.glCopyTexSubImage2D(GL20.GL_TEXTURE_2D, 0, 0, 0, x, y, w, h)
 }

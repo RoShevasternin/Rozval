@@ -1,6 +1,5 @@
 package com.lewydo.rozval.game.actors.shader
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
@@ -10,20 +9,17 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.glutils.FrameBuffer
 import com.badlogic.gdx.math.Matrix4
-import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Group
-import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.utils.ScreenUtils
 import com.lewydo.rozval.game.utils.actor.getTopParent
 import com.lewydo.rozval.game.utils.advanced.AdvancedGroup
 import com.lewydo.rozval.game.utils.advanced.AdvancedScreen
 import com.lewydo.rozval.util.className
-import com.lewydo.rozval.util.log
 
-class ABackgroundBlurScreenShot(
+class ABlurBack_OLD(
     override val screen: AdvancedScreen,
     private val maskTexture: Texture? = null
 ): AdvancedGroup() {
@@ -39,8 +35,8 @@ class ABackgroundBlurScreenShot(
     private var textureSceneUI  : TextureRegion? = null
     private var textureScene    : TextureRegion? = null
 
-    private val aMask = AMaskGroup(screen, maskTexture)
-    val aBlur = ABlurGroup(screen)
+    private val aMask = AMask(screen, maskTexture)
+     val aBlur = ABlur(screen)
 
     var radiusBlur = 0f
         set(value) {
@@ -73,49 +69,24 @@ class ABackgroundBlurScreenShot(
 
         if (batch == null) throw Exception("Error draw: ${this::class.simpleName}")
 
-//        batch.end()
+        batch.end()
+        captureScreenBack(batch)
+        captureScreenUI(batch)
+        captureScreenAll(batch)
 
-        /** ОПТИМІЗАЦІЯ - НЕ РЕНДЕР РІЗНІ СЛОЇ (BACK | UI) А РОБИМ ScreenShot!!! */
-        val r = getScreenBounds()
+/** ОПТИМІЗАЦІЯ - НЕ РЕНДЕР РІЗНІ СЛОЇ (BACK | UI) А РОБИМ ScreenShot!!! */
+//        batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA)
+//
+//        fun captureFromScreenRegion(x: Int, y: Int, w: Int, h: Int) {
+//            Gdx.gl.glBindTexture(GL20.GL_TEXTURE_2D, textureScene!!.texture.textureObjectHandle)
+//            Gdx.gl20.glCopyTexSubImage2D(GL20.GL_TEXTURE_2D, 0, 0, 0, x, y, w, h)
+//        }
+//
+//        captureFromScreenRegion(x.toInt(),y.toInt(),1200,550)
 
-        fun captureFromScreenRegion(x: Int, y: Int, w: Int, h: Int) {
-            Gdx.gl.glBindTexture(GL20.GL_TEXTURE_2D, textureScene!!.texture.textureObjectHandle)
-            Gdx.gl20.glCopyTexSubImage2D(GL20.GL_TEXTURE_2D, 0, 0, 0, x, y, w, h)
-        }
-
-        captureFromScreenRegion(
-            r.x.toInt(),
-            r.y.toInt(),
-            r.width.toInt(),
-            r.height.toInt()
-        )
-
-//        batch.begin()
+        batch.begin()
 
         super.draw(batch, parentAlpha)
-    }
-
-    fun getScreenBounds(): Rectangle {
-        vecGroupPosition.set(localToStageCoordinates(vecTmp.set(0f, 0f)))
-
-        // Отримуємо екранні координати (перетворюємо їх у пікселі)
-        val bottomLeft = vecBottomLeft.set(vecGroupPosition.x, vecGroupPosition.y)
-        val topRight   = vecTopRight.set(vecGroupPosition.x + width, vecGroupPosition.y + height)
-
-        // Конвертуємо координати з FitViewport у ScreenViewport
-        screen.viewportUI.project(bottomLeft)
-        screen.viewportUI.project(topRight)
-
-        // Отримуємо екранні значення
-        val screenX = bottomLeft.x
-        val screenY = bottomLeft.y
-        val screenW = topRight.x - bottomLeft.x
-        val screenH = topRight.y - bottomLeft.y
-
-        log("screenX = $screenX, screenY = $screenY, screenW = $screenW, screenH = $screenH")
-
-        return Rectangle(screenX, screenY, screenW, screenH)
-        //return Rectangle(0f, 0f, screenW, screenH)
     }
 
     private fun createFrameBuffer() {
@@ -125,7 +96,7 @@ class ABackgroundBlurScreenShot(
 
         fboSceneBack = FrameBuffer(Pixmap.Format.RGBA8888, width.toInt(), height.toInt(), false)
         fboSceneUI   = FrameBuffer(Pixmap.Format.RGBA8888, width.toInt(), height.toInt(), false)
-        fboScene     = FrameBuffer(Pixmap.Format.RGB888, 806,462, false)
+        fboScene     = FrameBuffer(Pixmap.Format.RGBA8888, width.toInt(), height.toInt(), false)
 
         textureSceneBack = TextureRegion(fboSceneBack!!.colorBufferTexture).apply { flip(false, true) }
         textureSceneUI   = TextureRegion(fboSceneUI!!.colorBufferTexture).apply { flip(false, true) }

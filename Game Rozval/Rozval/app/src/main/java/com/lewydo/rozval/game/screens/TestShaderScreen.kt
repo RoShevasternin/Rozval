@@ -11,8 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.utils.Align
 import com.lewydo.rozval.game.actors.ATmpGroup
 import com.lewydo.rozval.game.actors.progress.AProgressDefault
-import com.lewydo.rozval.game.actors.shader.ABackgroundBlurScreenShot
-import com.lewydo.rozval.game.actors.shader.ABlurBackGroup
+import com.lewydo.rozval.game.actors.shader.ABlurBack
 import com.lewydo.rozval.game.actors.shader.ATestShader
 import com.lewydo.rozval.game.utils.*
 import com.lewydo.rozval.game.utils.actor.animHide
@@ -93,14 +92,10 @@ class TestShaderScreen: AdvancedScreen() {
 
         addTest()
 
-        val tmpGroupTest = ATmpGroup(this@TestShaderScreen)
-        addAndFillActor(tmpGroupTest)
-        tmpGroupTest.disable()
-
-        val mainTEST = ABackgroundBlurScreenShot(this@TestShaderScreen, /*gdxGame.assetsAll.MASK_CIRCLE*/)//,game.assetsLoader.builderList[2])
+        val mainTEST = ABlurBack(this@TestShaderScreen, gdxGame.assetsAll.MASK_CIRCLE)//,game.assetsLoader.builderList[2])
         mainTEST.debug()
-        mainTEST.setBounds(155f, 28f, 1209f, 693f)
-        tmpGroupTest.addActor(mainTEST)
+        mainTEST.setBounds(500f, 100f, 1000f, 600f)
+        addActor(mainTEST)
 
         val testGroup = ATmpGroup(this@TestShaderScreen)
         testGroup.debug()
@@ -132,7 +127,7 @@ class TestShaderScreen: AdvancedScreen() {
             }
         }
 
-        //addScroll()
+        addScroll()
     }
 
     private fun AdvancedStage.addTest() {
