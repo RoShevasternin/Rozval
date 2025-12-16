@@ -127,7 +127,7 @@ class LoaderScreen : AdvancedMainScreen() {
 //            } }
 
             hideScreen {
-                gdxGame.navigationManager.navigate(TestShaderScreen::class.java.name)//   MenuScreen::class.java.name)
+                gdxGame.navigationManager.navigate(MenuScreen::class.java.name)//TestShaderScreen::class.java.name)//
             }
         }
     }

@@ -77,7 +77,7 @@ fun Texture.combineByCenter(texture: Texture): Texture {
     return textureResult
 }
 
-fun captureScreenShot(texture: TextureRegion, x: Int, y: Int, w: Int, h: Int) {
-    Gdx.gl.glBindTexture(GL20.GL_TEXTURE_2D, texture.texture.textureObjectHandle)
+fun captureScreenShot(region: TextureRegion, x: Int, y: Int, w: Int, h: Int) {
+    Gdx.gl.glBindTexture(GL20.GL_TEXTURE_2D, region.texture.textureObjectHandle)
     Gdx.gl20.glCopyTexSubImage2D(GL20.GL_TEXTURE_2D, 0, 0, 0, x, y, w, h)
 }

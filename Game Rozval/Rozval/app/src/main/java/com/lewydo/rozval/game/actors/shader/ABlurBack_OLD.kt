@@ -17,7 +17,7 @@ import com.badlogic.gdx.utils.ScreenUtils
 import com.lewydo.rozval.game.utils.actor.getTopParent
 import com.lewydo.rozval.game.utils.advanced.AdvancedGroup
 import com.lewydo.rozval.game.utils.advanced.AdvancedScreen
-import com.lewydo.rozval.util.className
+import com.lewydo.rozval.util.currentClassName
 
 class ABlurBack_OLD(
     override val screen: AdvancedScreen,
@@ -231,10 +231,10 @@ class ABlurBack_OLD(
 
     override fun getRotation() = 0f
     override fun setRotation(degrees: Float) {
-        throw Exception("$className - не обертається | NOT - setRotation")
+        throw Exception("$currentClassName - не обертається | NOT - setRotation")
     }
     override fun rotateBy(amountInDegrees: Float) {
-        throw Exception("$className - не обертається | NOT - rotateBy")
+        throw Exception("$currentClassName - не обертається | NOT - rotateBy")
     }
     override fun getScaleX(): Float = 1f
     override fun getScaleY(): Float = 1f

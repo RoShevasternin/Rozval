@@ -10,6 +10,8 @@ import com.badlogic.gdx.utils.Disposable
 import com.lewydo.rozval.game.utils.SizeScaler
 import com.lewydo.rozval.game.utils.disposeAll
 import com.lewydo.rozval.util.cancelCoroutinesAll
+import com.lewydo.rozval.util.currentClassName
+import com.lewydo.rozval.util.log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import java.util.concurrent.atomic.AtomicBoolean
@@ -68,6 +70,8 @@ abstract class AdvancedGroup : WidgetGroup(), Disposable {
         if (width > 0 && height > 0 && stage != null) {
             sizeScaler.calculateScale(Vector2(width, height))
             if (onceInit.getAndSet(false)) { addActorsOnGroup() }
+        } else {
+            //log("[no tryInitGroup] $currentClassName: {w = $width | h = $height | stage = ${stage != null}}")
         }
     }
 

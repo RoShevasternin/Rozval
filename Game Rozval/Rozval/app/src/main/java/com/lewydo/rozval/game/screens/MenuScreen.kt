@@ -1,6 +1,5 @@
 package com.lewydo.rozval.game.screens
 
-import com.lewydo.rozval.game.GDXGame
 import com.lewydo.rozval.game.actors.main.AMainMenu
 import com.lewydo.rozval.game.utils.Block
 import com.lewydo.rozval.game.utils.advanced.AdvancedMainScreen

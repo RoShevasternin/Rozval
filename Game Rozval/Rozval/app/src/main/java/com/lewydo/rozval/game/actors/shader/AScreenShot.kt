@@ -1,5 +1,7 @@
 package com.lewydo.rozval.game.actors.shader
 
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
@@ -9,33 +11,12 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.lewydo.rozval.game.utils.advanced.AdvancedGroup
 import com.lewydo.rozval.game.utils.advanced.AdvancedScreen
-import com.lewydo.rozval.game.utils.captureScreenShot
-import com.lewydo.rozval.util.currentClassName
+import java.util.concurrent.atomic.AtomicBoolean
 
-class ABlurBack(
-    override val screen: AdvancedScreen,
-    maskTexture: Texture? = null
-): AdvancedGroup() {
+class AScreenShot(override val screen: AdvancedScreen) : AdvancedGroup() {
 
     private lateinit var regionScreenShot: TextureRegion
-
     private val boundsScreenShot = Rectangle()
-
-    private val aMask = AMask(screen, maskTexture)
-    private val aBlur = ABlur(screen)
-
-    var radiusBlur = 0f
-        set(value) {
-            aBlur.radiusBlur = value
-            field = value
-        }
-
-    var isStaticEffect = false
-        set(value) {
-            aBlur.isStaticEffect = value
-            aMask.isStaticEffect = value
-            field = value
-        }
 
     private val vecTmp           = Vector2(0f, 0f)
     private val vecGroupPosition = Vector2()
@@ -46,15 +27,10 @@ class ABlurBack(
         updateBoundsScreenShot()
         regionScreenShot = TextureRegion(Texture(boundsScreenShot.width.toInt(), boundsScreenShot.height.toInt(), Pixmap.Format.RGB888)).apply { flip(false, true) }
 
-        addAndFillActor(aMask)
-        aMask.addAndFillActor(aBlur)
-        aBlur.addAndFillActor(Image(regionScreenShot))
+        addAndFillActor(Image(regionScreenShot))
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
-        if (aBlur.isBlurEnabled.not()) return
-        if (batch == null) throw Exception("Error draw: ${this::class.simpleName}")
-
         updateBoundsScreenShot()
         captureScreenShot(
             regionScreenShot,
@@ -87,19 +63,11 @@ class ABlurBack(
         //log("screenX = $screenX, screenY = $screenY, screenW = $screenW, screenH = $screenH")
 
         boundsScreenShot.set(screenX, screenY, screenW, screenH)
-        //return Rectangle(0f, 0f, screenW, screenH)
+        boundsScreenShot.set(0f, 0f, screenW, screenH)
     }
 
-    // rotate | scale - Only mask ------------------------------------------------------------
-
-    override fun getRotation() = 0f
-    override fun setRotation(degrees: Float) {
-        throw Exception("$currentClassName - не обертається | NOT - setRotation")
+    private fun captureScreenShot(region: TextureRegion, x: Int, y: Int, w: Int, h: Int) {
+        Gdx.gl.glBindTexture(GL20.GL_TEXTURE_2D, region.texture.textureObjectHandle)
+        Gdx.gl20.glCopyTexSubImage2D(GL20.GL_TEXTURE_2D, 0, 0, 0, x, y, w, h)
     }
-    override fun rotateBy(amountInDegrees: Float) {
-        throw Exception("$currentClassName - не обертається | NOT - rotateBy")
-    }
-    override fun getScaleX(): Float = 1f
-    override fun getScaleY(): Float = 1f
-
 }

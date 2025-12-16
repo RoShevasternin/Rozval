@@ -1,6 +1,5 @@
 package com.lewydo.rozval.game.actors.button.location.actors
 
-import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle
@@ -10,6 +9,7 @@ import com.lewydo.rozval.game.actors.autoLayout.AutoLayout
 import com.lewydo.rozval.game.utils.SizeScaler
 import com.lewydo.rozval.game.utils.advanced.AdvancedScreen
 import com.lewydo.rozval.game.utils.gdxGame
+import com.lewydo.rozval.util.log
 
 class AStarsNecessary(
     override val screen: AdvancedScreen,
@@ -37,6 +37,7 @@ class AStarsNecessary(
     // Actors ------------------------------------------------------------------------
 
     private fun addStars() {
+        starImg.debug()
         starImg.setSizeScaled(30f, 30f)
 
         starCountLbl.height = 30f.scaled

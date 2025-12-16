@@ -20,7 +20,7 @@ class ASaturationImage(
 ): AdvancedGroup() {
 
     companion object {
-        private val vertexShader   = Gdx.files.internal("shader/saturation/defaultVS.glsl").readString()
+        private val vertexShader   = Gdx.files.internal("shader/defaultVS.glsl").readString()
         private val fragmentShader = Gdx.files.internal("shader/saturation/saturationFS.glsl").readString()
     }
 

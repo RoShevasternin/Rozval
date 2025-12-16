@@ -5,6 +5,14 @@ plugins {
 }
 
 android {
+//    signingConfigs {
+//        create("release") {
+//            storeFile = file("D:\\Rozval\\Game Rozval\\release\\jksforrozval")
+//            keyAlias = "aaa"
+//            storePassword = "aaa"
+//            keyPassword = "aaa"
+//        }
+//    }
     namespace = "com.lewydo.rozval"
     compileSdk = 36
 
@@ -28,14 +36,15 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            //signingConfig = signingConfigs.getByName("release")
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
     sourceSets {
         getByName("main") {
@@ -58,12 +67,12 @@ dependencies {
 
     implementation("androidx.core:core-ktx:1.17.0")
     implementation("androidx.appcompat:appcompat:1.7.1")
-    implementation("androidx.activity:activity-ktx:1.11.0")
+    implementation("androidx.activity:activity-ktx:1.12.1")
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.9.5")
-    implementation("androidx.datastore:datastore-preferences:1.1.7")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.9.6")
+    implementation("androidx.datastore:datastore-preferences:1.2.0")
 
-    val gdxVersion = "1.13.1"
+    val gdxVersion = "1.14.0"
     implementation("com.badlogicgames.gdx:gdx-backend-android:$gdxVersion")
     natives("com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a")
     natives("com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-arm64-v8a")
@@ -75,8 +84,8 @@ dependencies {
     natives("com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86")
     natives("com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86_64")
     implementation("com.badlogicgames.gdx:gdx-box2d:$gdxVersion")
-    natives("com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-armeabi-v7a")
     natives("com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-arm64-v8a")
+    natives("com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-armeabi-v7a")
     natives("com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-x86")
     natives("com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-x86_64")
 

@@ -1,5 +1,5 @@
-alias: Rostenko
-pass: FlamenKoCertUn12431o
+alias: Rozvalovich
+pass: PasworDenMyHartIs123
 
 policy: https://doc-hosting.flycricket.io/space-ball-privacy-policy/04afd3be-265d-451d-8b2d-b6abe574b4dd/privacy
 

@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.Align
 import com.lewydo.rozval.game.actors.ATmpGroup
 import com.lewydo.rozval.game.actors.progress.AProgressDefault
 import com.lewydo.rozval.game.actors.shader.ABlurBack
+import com.lewydo.rozval.game.actors.shader.AScreenShot
 import com.lewydo.rozval.game.actors.shader.ATestShader
 import com.lewydo.rozval.game.utils.*
 import com.lewydo.rozval.game.utils.actor.animHide
@@ -112,12 +113,18 @@ class TestShaderScreen: AdvancedScreen() {
         p2.setBounds(10f, 5f, 200f, 315f)
         testGroup.addActor(p2)
 
+        val ara = AScreenShot(this@TestShaderScreen)
+        ara.debug()
+        ara.setBounds(0f, 0f, 500f, 500f)
+        addActor(ara)
+
         coroutine?.launch {
             progress.progressPercentFlow.collect {
                 p1.x = it * 3
                 p2.x = -it * 3
                 mainTEST.radiusBlur = it
                 mainTEST.x = it * 10
+                ara.x = it * 10
 
                 if (it > 60) {
                     mainTEST.isStaticEffect = true

@@ -10,12 +10,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.utils.viewport.ScreenViewport
-import com.lewydo.rozval.game.GDXGame
 import com.lewydo.rozval.game.utils.*
 import com.lewydo.rozval.game.utils.font.FontGenerator
 import com.lewydo.rozval.game.utils.font.FontGenerator.Companion.FontPath
 import com.lewydo.rozval.util.cancelCoroutinesAll
-import com.lewydo.rozval.util.className
+import com.lewydo.rozval.util.currentClassName
 import com.lewydo.rozval.util.log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -50,7 +49,7 @@ abstract class AdvancedScreen(
     }
 
     override fun show() {
-        log("show AdvancedScreen: $className")
+        log("show AdvancedScreen: $currentClassName")
         stageBack.addAndFillActor(backBackgroundImage)
         stageUI.addAndFillActor(uiBackgroundImage)
 
@@ -67,7 +66,7 @@ abstract class AdvancedScreen(
     }
 
     override fun dispose() {
-        log("dispose AdvancedScreen: $className")
+        log("dispose AdvancedScreen: $currentClassName")
         disposeAll(
             stageBack, stageUI, drawerUtil,
             fontGenerator_LondrinaSolid_Regular

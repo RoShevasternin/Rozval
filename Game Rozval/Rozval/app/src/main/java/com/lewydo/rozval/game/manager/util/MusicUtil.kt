@@ -10,6 +10,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import kotlin.div
+import kotlin.times
 
 class MusicUtil: Disposable {
 
@@ -24,31 +26,31 @@ class MusicUtil: Disposable {
 
     var coff = 1f
 
-    private var _music: Music? = null
-    var music: Music?
-        get() = _music
+    private var lastMusic: Music? = null
+    var currentMusic: Music?
+        get() = lastMusic
         set(value) { runGDX {
             if (value != null) {
-                if (_music != value) {
-                    _music?.stop()
-                    _music = value
-                    _music?.volume = (volumeLevelFlow.value / 100f) * coff
-                    _music?.play()
+                if (lastMusic != value) {
+                    lastMusic?.stop()
+                    lastMusic = value
+                    lastMusic?.volume = (volumeLevelFlow.value / 100f) * coff
+                    lastMusic?.play()
                 }
             } else {
-                _music?.stop()
-                _music = null
+                lastMusic?.stop()
+                lastMusic = null
             }
         } }
 
     init {
-        coroutine.launch { volumeLevelFlow.collect { level -> runGDX { _music?.volume = (level / 100f) * coff } } }
+        coroutine.launch { volumeLevelFlow.collect { level -> runGDX { lastMusic?.volume = (level / 100f) * coff } } }
     }
 
     override fun dispose() {
         cancelCoroutinesAll(coroutine)
-        _music = null
-        music  = null
+        lastMusic = null
+        currentMusic  = null
     }
 
 }

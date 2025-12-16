@@ -17,7 +17,7 @@ import com.lewydo.rozval.game.dataStore.DS_Key
 import com.lewydo.rozval.game.dataStore.DS_Location
 import com.lewydo.rozval.game.dataStore.DS_Star
 import com.lewydo.rozval.game.utils.disposeAll
-import com.lewydo.rozval.util.className
+import com.lewydo.rozval.util.currentClassName
 import com.lewydo.rozval.util.log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -74,7 +74,7 @@ class GDXGame(val activity: MainActivity) : AdvancedGame() {
             disposableSet.disposeAll()
             disposeAll(assetManager, musicUtil)
 
-            log("dispose $className")
+            log("dispose $currentClassName")
             super.dispose()
         } catch (e: Exception) { log("exception: ${e.message}") }
     }

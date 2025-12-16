@@ -78,7 +78,7 @@ class WorldContactListener: ContactListener {
             when {
                 tmpArray.any { it.id == BodyId.BORDERS }
                 -> if (currentTimeMinus(timeContactBorders) >= 210) {
-                    soundUtil.apply { play(boomList.random()) }
+                    //soundUtil.apply { play(boomList.random()) }
                     timeContactBorders = System.currentTimeMillis()
                 }
             }
