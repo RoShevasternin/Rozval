@@ -1,15 +1,10 @@
 package com.lewydo.rozval.game.box2d
 
-import android.graphics.drawable.shapes.RectShape
-import android.graphics.drawable.shapes.RoundRectShape
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.Matrix4
 import com.badlogic.gdx.math.Vector2
-import com.badlogic.gdx.physics.box2d.Body
-import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
 import com.badlogic.gdx.physics.box2d.World
-import com.badlogic.gdx.physics.box2d.joints.PulleyJoint
 import com.badlogic.gdx.utils.Disposable
 import com.lewydo.rozval.util.cancelCoroutinesAll
 import com.lewydo.rozval.util.log
@@ -20,7 +15,7 @@ class WorldUtil: Disposable {
 
     companion object {
         const val GRAVITY_X = 0f
-        const val GRAVITY_Y = 0f
+        const val GRAVITY_Y = -9.8f
         private const val TIME_STEP: Float = 1f / 60f
 
         var isDebug = true

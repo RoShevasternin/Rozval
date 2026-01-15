@@ -8,8 +8,6 @@ import com.lewydo.rozval.game.actors.autoLayout.AutoLayout
 import com.lewydo.rozval.game.utils.SizeScaler
 import com.lewydo.rozval.game.utils.advanced.AdvancedGroup
 import com.lewydo.rozval.game.utils.advanced.AdvancedScreen
-import com.lewydo.rozval.util.currentClassName
-import com.lewydo.rozval.util.log
 
 class AStarOrKey(
     override val screen: AdvancedScreen,
@@ -34,7 +32,6 @@ class AStarOrKey(
     override fun addActorsOnGroup() {
         addAndFillActor(horizontalGroup)
         horizontalGroup.apply {
-            this.debug()
             this.addStarHorizontalGroup()
             this.addOrLabel()
             this.addKeyHorizontalGroup()
@@ -54,7 +51,7 @@ class AStarOrKey(
 
     private fun AdvancedGroup.addOrLabel() {
         orLbl.apply {
-            height = 30f.scaled
+            height = 30f.toActual
             setAlignment(Align.center)
         }
         addActor(orLbl)

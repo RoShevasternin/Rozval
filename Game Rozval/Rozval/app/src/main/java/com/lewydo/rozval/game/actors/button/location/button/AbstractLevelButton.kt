@@ -2,7 +2,7 @@ package com.lewydo.rozval.game.actors.button.location.button
 
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.utils.Align
-import com.lewydo.rozval.game.actors.ALabel
+import com.lewydo.rozval.game.actors.label.ALabel
 import com.lewydo.rozval.game.actors.shader.ASaturationImage
 import com.lewydo.rozval.game.utils.actor.disable
 import com.lewydo.rozval.game.utils.advanced.AdvancedGroup

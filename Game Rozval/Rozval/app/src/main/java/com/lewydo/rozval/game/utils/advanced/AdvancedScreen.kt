@@ -4,7 +4,9 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.ScreenAdapter
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Disposable
@@ -22,10 +24,10 @@ import kotlinx.coroutines.Dispatchers
 abstract class AdvancedScreen(
     val WIDTH : Float = WIDTH_UI,
     val HEIGHT: Float = HEIGHT_UI
-) : ScreenAdapter(), AdvancedInputProcessor {
+) : ScreenAdapter(), IInputAdapter {
 
-    val viewportBack by lazy { ScreenViewport() }
-    val stageBack    by lazy { AdvancedStage(viewportBack) }
+    val viewportBackScreen by lazy { ScreenViewport() }
+    val stageBackScreen    by lazy { AdvancedStage(viewportBackScreen) }
 
     val viewportUI by lazy { FitViewport(WIDTH, HEIGHT) }
     val stageUI    by lazy { AdvancedStage(viewportUI) }
@@ -41,26 +43,32 @@ abstract class AdvancedScreen(
 
     val drawerUtil by lazy { ShapeDrawerUtil(stageUI.batch) }
 
+    private val scalerVector = Vector2()
+    val scalerUItoScreen     = SizeScaler(SizeScaler.Axis.X, WIDTH_UI)
+
     val fontGenerator_LondrinaSolid_Regular = FontGenerator(FontPath.LondrinaSolid_Regular)
 
     override fun resize(width: Int, height: Int) {
-        viewportBack.update(width, height, true)
+        viewportBackScreen.update(width, height, true)
         viewportUI.update(width, height, true)
+
+        scalerUItoScreen.calculateScale(scalerVector.set(width.toFloat(), height.toFloat()))
     }
 
     override fun show() {
         log("show AdvancedScreen: $currentClassName")
-        stageBack.addAndFillActor(backBackgroundImage)
+        stageBackScreen.addAndFillActor(backBackgroundImage)
         stageUI.addAndFillActor(uiBackgroundImage)
 
+        stageBackScreen.addActorsOnStageBackScreen()
         stageUI.addActorsOnStageUI()
 
-        Gdx.input.inputProcessor = inputMultiplexer.apply { addProcessors(this@AdvancedScreen, stageUI, stageBack) }
+        Gdx.input.inputProcessor = inputMultiplexer.apply { addProcessors(this@AdvancedScreen, stageUI, stageBackScreen) }
         Gdx.input.setCatchKey(Input.Keys.BACK, true)
     }
 
     override fun render(delta: Float) {
-        stageBack.render()
+        stageBackScreen.render()
         stageUI.render()
         drawerUtil.update()
     }
@@ -68,7 +76,7 @@ abstract class AdvancedScreen(
     override fun dispose() {
         log("dispose AdvancedScreen: $currentClassName")
         disposeAll(
-            stageBack, stageUI, drawerUtil,
+            stageBackScreen, stageUI, drawerUtil,
             fontGenerator_LondrinaSolid_Regular
         )
         disposableSet.disposeAll()
@@ -81,27 +89,42 @@ abstract class AdvancedScreen(
         when(keycode) {
             Input.Keys.BACK -> {
                 if (gdxGame.navigationManager.isBackStackEmpty()) gdxGame.navigationManager.exit()
-                else hideScreen { gdxGame.navigationManager.back() }
+                else animHide { gdxGame.navigationManager.back() }
             }
         }
         return true
     }
 
-    abstract fun AdvancedStage.addActorsOnStageUI()
+    abstract fun animShow(blockEnd: Block = {})
+    abstract fun animHide(blockEnd: Block = {})
 
-    abstract fun hideScreen(block: Block)
+    open fun AdvancedStage.addActorsOnStageBackScreen() {}
+    open fun AdvancedStage.addActorsOnStageUI() {}
 
     fun setBackBackground(region: TextureRegion) {
         backBackgroundImage.drawable = TextureRegionDrawable(region)
     }
 
-    fun setUIBackground(texture: TextureRegion) {
+    fun setBackBackground(texture: Texture) {
+        backBackgroundImage.drawable = TextureRegionDrawable(texture)
+    }
+
+    fun setUIBackground(region: TextureRegion) {
+        uiBackgroundImage.drawable = TextureRegionDrawable(region)
+    }
+
+    fun setUIBackground(texture: Texture) {
         uiBackgroundImage.drawable = TextureRegionDrawable(texture)
     }
 
     fun setBackgrounds(backRegion: TextureRegion, uiRegion: TextureRegion = backRegion) {
         setBackBackground(backRegion)
         setUIBackground(uiRegion)
+    }
+
+    fun setBackgrounds(backTexture: Texture, uiTexture: Texture = backTexture) {
+        setBackBackground(backTexture)
+        setUIBackground(uiTexture)
     }
 
 }

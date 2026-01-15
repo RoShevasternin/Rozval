@@ -175,10 +175,15 @@ open class AButton(
             pressed = TextureRegionDrawable(gdxGame.assetsAll.apply_press),
             disabled = TextureRegionDrawable(gdxGame.assetsAll.apply_press),
         )
-        Type.BonusGame -> AButtonStyle(
-            default = TextureRegionDrawable(gdxGame.assetsAll.bonus_game_def),
-            pressed = TextureRegionDrawable(gdxGame.assetsAll.bonus_game_press),
-            disabled = TextureRegionDrawable(gdxGame.assetsAll.bonus_game_press),
+        Type.GetKeys -> AButtonStyle(
+            default = TextureRegionDrawable(gdxGame.assetsAll.get_keys_def),
+            pressed = TextureRegionDrawable(gdxGame.assetsAll.get_keys_press),
+            disabled = TextureRegionDrawable(gdxGame.assetsAll.get_keys_press),
+        )
+        Type.Market -> AButtonStyle(
+            default = TextureRegionDrawable(gdxGame.assetsAll.market_def),
+            pressed = TextureRegionDrawable(gdxGame.assetsAll.market_press),
+            disabled = TextureRegionDrawable(gdxGame.assetsAll.market_press),
         )
         Type.Lock -> AButtonStyle(
             default = TextureRegionDrawable(gdxGame.assetsAll.lock_def),
@@ -210,7 +215,7 @@ open class AButton(
     )
 
     enum class Type {
-        None, Exit, Menu, Apply, BonusGame, Lock,
+        None, Exit, Menu, Apply, GetKeys, Market, Lock,
         LevelOpenOfKey, SeparatorOpenOfKey,
     }
 

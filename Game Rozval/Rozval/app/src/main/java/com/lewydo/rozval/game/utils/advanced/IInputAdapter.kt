@@ -2,7 +2,7 @@ package com.lewydo.rozval.game.utils.advanced
 
 import com.badlogic.gdx.InputProcessor
 
-interface AdvancedInputProcessor : InputProcessor {
+interface IInputAdapter : InputProcessor {
     override fun keyDown(keycode: Int): Boolean {
         return false
     }

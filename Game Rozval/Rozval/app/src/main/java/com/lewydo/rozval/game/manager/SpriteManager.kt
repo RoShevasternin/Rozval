@@ -51,8 +51,14 @@ class SpriteManager(var assetManager: AssetManager) {
 
         LVL_1(TextureData("textures/level_backgrounds/LVL 1.png")),
 
-        BUILDER    (TextureData("textures/builder.png")),
-        MASK_CIRCLE(TextureData("textures/mask_circle.png")),
+
+        // TEST
+        MASK_CIRCLE (TextureData("textures/TEST/mask_circle.png")),
+        HOR         (TextureData("textures/TEST/hor.png")),
+        VER         (TextureData("textures/TEST/ver.png")),
+        BRICK       (TextureData("textures/TEST/Brick.png")),
+        WOOD        (TextureData("textures/TEST/wood.png")),
+        RESET       (TextureData("textures/TEST/reset.png")),
     }
 
     data class AtlasData(val path: String) {

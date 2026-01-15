@@ -1,12 +1,14 @@
 package com.lewydo.rozval.game.screens
 
-import com.lewydo.rozval.game.actors.main.AMainLoader
+import com.lewydo.rozval.game.actors.AMainLoader
 import com.lewydo.rozval.game.manager.MusicManager
 import com.lewydo.rozval.game.manager.ParticleEffectManager
 import com.lewydo.rozval.game.manager.SoundManager
 import com.lewydo.rozval.game.manager.SpriteManager
 import com.lewydo.rozval.game.utils.Block
-import com.lewydo.rozval.game.utils.advanced.AdvancedMainScreen
+import com.lewydo.rozval.game.utils.TIME_ANIM_SCREEN
+import com.lewydo.rozval.game.utils.actor.animHide
+import com.lewydo.rozval.game.utils.advanced.AdvancedScreen
 import com.lewydo.rozval.game.utils.advanced.AdvancedStage
 import com.lewydo.rozval.game.utils.gdxGame
 import com.lewydo.rozval.game.utils.runGDX
@@ -15,13 +17,13 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-class LoaderScreen : AdvancedMainScreen() {
+class LoaderScreen : AdvancedScreen() {
 
     private val progressFlow     = MutableStateFlow(0f)
     private var isFinishLoading  = false
     private var isFinishProgress = false
 
-    override val aMain by lazy { AMainLoader(this) }
+    val aMain by lazy { AMainLoader(this) }
 
     override fun show() {
         loadSplashAssets()
@@ -37,19 +39,14 @@ class LoaderScreen : AdvancedMainScreen() {
     }
 
     override fun AdvancedStage.addActorsOnStageUI() {
-        addMain()
-    }
-
-    override fun hideScreen(block: Block) {
-        aMain.animHideMain { block.invoke() }
-    }
-
-    // Actors UI ------------------------------------------------------------------------
-
-    override fun AdvancedStage.addMain() {
         addAndFillActor(aMain)
-
     }
+
+    override fun animHide(blockEnd: Block) {
+        aMain.animHide(TIME_ANIM_SCREEN) { blockEnd() }
+    }
+
+    override fun animShow(blockEnd: Block) {}
 
     // Logic ------------------------------------------------------------------------
 
@@ -126,8 +123,8 @@ class LoaderScreen : AdvancedMainScreen() {
 //                coff      = 0.15f
 //            } }
 
-            hideScreen {
-                gdxGame.navigationManager.navigate(MenuScreen::class.java.name)//TestShaderScreen::class.java.name)//
+            animHide {
+                gdxGame.navigationManager.navigate(GameScreen::class.java.name)//MenuScreen::class.java.name)//TestShaderScreen::class.java.name)//
             }
         }
     }

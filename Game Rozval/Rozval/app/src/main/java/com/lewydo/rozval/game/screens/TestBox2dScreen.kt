@@ -1,122 +1,169 @@
 package com.lewydo.rozval.game.screens
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.ui.Image
-import com.lewydo.rozval.game.GDXGame
+import com.badlogic.gdx.scenes.scene2d.ui.Label
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle
+import com.badlogic.gdx.utils.Align
+import com.lewydo.rozval.game.actors.mainPanel.GameMainPanel
 import com.lewydo.rozval.game.actors.progress.AProgressDefault
-import com.lewydo.rozval.game.box2d.bodies.standart.BDynamic
-import com.lewydo.rozval.game.box2d.bodies.test.BRect
-import com.lewydo.rozval.game.utils.Block
-import com.lewydo.rozval.game.utils.TIME_ANIM_SCREEN
+import com.lewydo.rozval.game.actors.shader.test.ABlock
+import com.lewydo.rozval.game.box2d.BodyId
+import com.lewydo.rozval.game.box2d.bodies.BBrick
+import com.lewydo.rozval.game.box2d.bodies.BPersik
+import com.lewydo.rozval.game.box2d.bodies.BWood
+import com.lewydo.rozval.game.box2d.bodiesGroup.BGBorders
+import com.lewydo.rozval.game.utils.*
+import com.lewydo.rozval.game.utils.actor.animDelay
 import com.lewydo.rozval.game.utils.actor.animHide
-import com.lewydo.rozval.game.utils.advanced.AdvancedBox2dUserScreen
-import com.lewydo.rozval.game.utils.advanced.AdvancedGroup
+import com.lewydo.rozval.game.utils.actor.animShow
+import com.lewydo.rozval.game.utils.actor.setOnClickListener
+import com.lewydo.rozval.game.utils.advanced.box2d.AdvancedBox2dUserScreen
 import com.lewydo.rozval.game.utils.advanced.AdvancedStage
-import com.lewydo.rozval.game.utils.gdxGame
-import com.lewydo.rozval.game.utils.region
-import com.lewydo.rozval.game.utils.runGDX
+import com.lewydo.rozval.game.utils.font.FontParameter
+import com.lewydo.rozval.util.log
 import kotlinx.coroutines.launch
 
 class TestBox2dScreen(): AdvancedBox2dUserScreen() {
 
-    private val bDynamic = BDynamic(this)
-    private val bRect    = BRect(this)
+    private val parameter = FontParameter().setCharacters(FontParameter.CharType.ALL)
+    private val font30    = fontGenerator_LondrinaSolid_Regular.generateFont(parameter.setSize(30))
 
     private val progress = AProgressDefault(this)
+    private val lblFPS   = Label("", LabelStyle(font30, GameColor.white))
+    private val reset    = Image(gdxGame.assetsAll.RESET)
+
+    private val mainPanel = GameMainPanel(this)
+
+    private val bPersic = BPersik(this)
+    private val bBrick  = BBrick(this)
+    private val bBlock  = BWood(this)
+
+    private val bgBorders = BGBorders(this)
 
     override fun show() {
-        setBackBackground(gdxGame.assetsAll.LVL_1.region)
+        stageBackScreen.root.color.a = 0f
+        stageUI.root.color.a   = 0f
+
+        //setBackgrounds(gdxGame.assetsAll.listBackgroundLVL[MenuScreen.LVL_CLICK-1])
+        setBackBackground(drawerUtil.getTexture(GameColor.black))
+        //setUIBackground(drawerUtil.getTexture(GameColor.background))
+
         super.show()
+
+        animShow {
+            log("Hello World")
+        }
     }
 
-    override fun AdvancedStage.addActorsOnStageBox2d() {
-        coroutine?.launch {
-            runGDX {
-                //createB_Dynamic()
-                //createB_Rect()
-            }
+    override fun render(delta: Float) {
+        super.render(delta)
+        lblFPS.setText("FPS: " + Gdx.graphics.framesPerSecond)
+    }
 
-//            panelMenu.animShowSuspend(TIME_ANIM_SCREEN_ALPHA)
-        }
+    override fun animShow(blockEnd: Block) {
+        stageUI.root.children.onEach { it.clearActions() }
+
+        stageBackScreen.root.animShow(TIME_ANIM_SCREEN)
+        stageUI.root.animShow(TIME_ANIM_SCREEN)
+
+        stageUI.root.animDelay(TIME_ANIM_SCREEN) { blockEnd() }
+    }
+
+    override fun animHide(blockEnd: Block) {
+        stageUI.root.children.onEach { it.clearActions() }
+
+        stageBackScreen.root.animHide(TIME_ANIM_SCREEN)
+        stageUI.root.animHide(TIME_ANIM_SCREEN)
+
+        stageUI.root.animDelay(TIME_ANIM_SCREEN) { blockEnd() }
     }
 
     override fun AdvancedStage.addActorsOnStageUI() {
-        coroutine?.launch {
-            runGDX {
-                addActor(progress)
-                progress.setBounds(420f, 946f, 1080f, 80f)
-
-                val img0 = Image(gdxGame.assetsLoader.builderList.first())
-                addActor(img0)
-                img0.debug()
-                img0.setBounds(57f, 179f, 200f, 315f)
-
-//                val test = ATestShaderGroup(this@TestScreen)
-//                addActor(test)
-//                test.debug()
-//                test.setBounds(859f, 304f, 200f, 315f)
-
-                coroutine?.launch {
-                    progress.progressPercentFlow.collect {
-//                        test.blurRadius = it
-                    }
-                }
-
-                val img = Image(gdxGame.assetsLoader.builderList[2])
-                addActor(img)
-                img.debug()
-                img.setBounds(57f, 566f, 200f, 315f)
-            }
-
-//            panelMenu.animShowSuspend(TIME_ANIM_SCREEN_ALPHA)
-        }
+        addMainPanel()
+        addTestFPSandProgress()
+        addBtnReset()
     }
 
-    override fun hideScreen(block: Block) {
-        coroutine?.launch {
-            runGDX {
-                stageBack.root.animHide(TIME_ANIM_SCREEN) { block.invoke() }
-            }
-        }
+    override fun AdvancedStage.addActorsOnStageWorld() {
+        addAndFillActor(Image(drawerUtil.getTexture(GameColor.background)))
+
+        create_BGBorders()
+        create_BPersik()
+        create_BBrick()
+        create_BBlock()
     }
 
     // Actors ------------------------------------------------------------------------
 
-    private fun AdvancedGroup.addPanel() {
+    private fun AdvancedStage.addMainPanel() {
+        addActor(mainPanel)
+        mainPanel.setBounds(1765f, 0f, 155f, 1080f)
 
+        mainPanel.menuBtnBlock = {
+            animHide { gdxGame.navigationManager.back() }
+        }
     }
 
-    // Body ------------------------------------------------------------------------
+    private fun AdvancedStage.addTestFPSandProgress() {
+        addActor(progress)
+        progress.setBounds(159f, 944f, 698f, 106f)
 
-    /*private fun createB_Dynamic() {
-        bDynamic.apply {
-            id = BodyId.DYNAMIC
-            collisionList.addAll(arrayOf(BodyId.RECT))
+        addActor(lblFPS)
+        lblFPS.apply {
+            setBounds(878f, 71f, 164f, 46f)
+            setAlignment(Align.center)
         }
-        bDynamic.create(339f, 473f, 135f, 135f)
-    }
 
-    private fun createB_Rect() {
-        bRect.apply {
-            id = BodyId.RECT
-            collisionList.addAll(arrayOf(BodyId.DYNAMIC))
-        }
-        bRect.create(849f, 428f, 223f, 223f)
-
-        bRect.beginContactBlockArray.add(AbstractBody.ContactBlock { body, contact ->
-            when(body.id) {
-                BodyId.DYNAMIC -> {
-                    runGDX {
-                        log("""
-                            normal: ${contact.worldManifold.normal},
-                            points: ${contact.worldManifold.points.joinToString()},
-                            separations: ${contact.worldManifold.separations.joinToString()},
-                            numberOfContactPoints: ${contact.worldManifold.numberOfContactPoints},
-                            """
-                        )
-                    }
-                }
+        coroutine?.launch {
+            progress.progressPercentFlow.collect {
+                (bBlock.actor as ABlock).updateDamage(it)
             }
-        })
-    }*/
+        }
+    }
+
+    private fun AdvancedStage.addBtnReset() {
+        addActor(reset)
+        reset.setBounds(39f, 944f, 106f, 106f)
+
+        reset.setOnClickListener(gdxGame.soundUtil) {
+            cameraGestureListener.reset()
+        }
+    }
+
+    // Bodies ------------------------------------------------------------------------
+
+    private fun create_BPersik() {
+        bPersic.id = BodyId.PERSIK
+        bPersic.create(1265f, 128f, 200f, 315f)
+    }
+
+    private fun create_BBrick() {
+        bBrick.id = BodyId.ITEM
+        bBrick.create(97f, 363f, 134f, 134f)
+        bBrick.body?.gravityScale = 0f
+
+        val startPosX = bBrick.actor!!.x
+
+        bBrick.renderBlockArray.add {
+            //log("x = ${bBrick.actor?.x} | $startPosX")
+            if (bBrick.actor!!.x !in ((startPosX-3f)..(startPosX+3f))) {
+                bBrick.renderBlockArray.clear()
+                bBrick.body?.gravityScale = 1f
+            }
+        }
+    }
+
+    private fun create_BBlock() {
+        bBlock.id = BodyId.BLOCK
+        bBlock.create(1541f, 172f, 156f, 156f)
+    }
+
+    // Bodies Groups ------------------------------------------------------------------------
+
+    private fun create_BGBorders() {
+        bgBorders.create(-41f, 62f, 1842f, 1073f)
+    }
+
 
 }

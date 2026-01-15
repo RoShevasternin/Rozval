@@ -34,7 +34,7 @@ class AKeysNecessary(
     private val keyCountLbl = Label("${getNecessaryKeyCount(keyCount)}/$necessaryKeys", labelStyle)
 
     override fun addActorsOnGroup() {
-        gap = 7f.scaled
+        gap = 7f.toActual
         addKeys()
     }
 
@@ -43,7 +43,7 @@ class AKeysNecessary(
     private fun addKeys() {
         keyImg.setSizeScaled(30f, 30f)
 
-        keyCountLbl.height = 30f.scaled
+        keyCountLbl.height = 30f.toActual
         keyCountLbl.setAlignment(Align.center)
 
         addActors(keyImg, keyCountLbl)

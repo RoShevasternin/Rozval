@@ -2,36 +2,37 @@ package com.lewydo.rozval.game.utils
 
 import com.badlogic.gdx.math.Vector2
 
-class SizeScaler(val axis: Axis, val originalSize: Float) {
+class SizeScaler(
+    private val axis      : Axis,
+    private val designSize: Float
+) {
 
-    private var scale       = 1f
-    private var newAxisSize = 0f
+    private var scale = 1f
 
-    fun calculateScale(newSize: Vector2) {
-        newAxisSize = when(axis) {
-            Axis.X -> newSize.x
-            Axis.Y -> newSize.y
+    fun calculateScale(actualSize: Vector2) {
+        val axisSize = when(axis) {
+            Axis.X -> actualSize.x
+            Axis.Y -> actualSize.y
         }
-        scale = originalSize.divOr0(newAxisSize)
+        scale = designSize.divOr(axisSize, 1f)
     }
 
-    fun scaled(size: Vector2): Vector2 {
-        return size.divOr0(scale)
+    fun toActual(designValue: Vector2): Vector2 {
+        return designValue.divOr(scale, 1f)
     }
 
-    fun scaledInverse(size: Vector2): Vector2 {
-        return size.scl(scale)
+    fun toDesign(actualValue: Vector2): Vector2 {
+        return actualValue.scl(scale)
     }
 
-    fun scaled(size: Float): Float {
-        return size.divOr0(scale)
-    }
-    fun scaledInverse(size: Float): Float {
-        return (size * scale)
+    fun toActual(designValue: Float): Float {
+        return designValue.divOr(scale, 1f)
     }
 
-    enum class Axis {
-        X, Y
+    fun toDesign(actualValue: Float): Float {
+        return (actualValue * scale)
     }
+
+    enum class Axis { X, Y }
 
 }

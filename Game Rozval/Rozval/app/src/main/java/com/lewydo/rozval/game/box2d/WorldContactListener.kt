@@ -22,6 +22,8 @@ class WorldContactListener: ContactListener {
 
     var beginContactBlockArray = Array<ContactBlock>()
     var endContactBlockArray   = Array<ContactBlock>()
+    var preSolveBlockArray     = Array<PreSolveBlock>()
+    var postSolveBlockArray    = Array<PostSolveBlock>()
 
     override fun beginContact(contact: Contact) {
         with(contact) {
@@ -29,7 +31,7 @@ class WorldContactListener: ContactListener {
             abstractBodyA.beginContact(abstractBodyB, contact)
             abstractBodyB.beginContact(abstractBodyA, contact)
 
-            beginContactBlockArray.onEach { it.block(abstractBodyA, abstractBodyB) }
+            beginContactBlockArray.forEach { it.block(abstractBodyA, abstractBodyB, contact) }
         }
     }
 
@@ -38,11 +40,20 @@ class WorldContactListener: ContactListener {
             abstractBodyA.endContact(abstractBodyB, contact)
             abstractBodyB.endContact(abstractBodyA, contact)
 
-            endContactBlockArray.onEach { it.block(abstractBodyA, abstractBodyB) }
+            endContactBlockArray.forEach { it.block(abstractBodyA, abstractBodyB, contact) }
         }
     }
 
     override fun preSolve(contact: Contact, oldManifold: Manifold?) {
+        oldManifold ?: return
+
+        with(contact) {
+            abstractBodyA.preSolve(abstractBodyB, contact, oldManifold)
+            abstractBodyB.preSolve(abstractBodyA, contact, oldManifold)
+
+            preSolveBlockArray.forEach { it.block(abstractBodyA, abstractBodyB, contact, oldManifold) }
+        }
+
 //        oldManifold?.apply {
 //            log(""" preSolve:
 //                ${this.type}
@@ -55,13 +66,22 @@ class WorldContactListener: ContactListener {
     }
 
     override fun postSolve(contact: Contact, impulse: ContactImpulse?) {
-        impulse?.apply {
-            log(""" postSolve:
-                ${this.count}
-                ${this.normalImpulses.sum()}
-                ${this.tangentImpulses.joinToString()}
-            """)
+        impulse ?: return
+
+        with(contact) {
+            abstractBodyA.postSolve(abstractBodyB, contact, impulse)
+            abstractBodyB.postSolve(abstractBodyA, contact, impulse)
+
+            postSolveBlockArray.forEach { it.block(abstractBodyA, abstractBodyB, contact, impulse) }
         }
+
+//        impulse?.apply {
+//            log(""" postSolve:
+//                ${this.count}
+//                ${this.normalImpulses.sum()}
+//                ${this.tangentImpulses.joinToString()}
+//            """)
+//        }
     }
 
     // ---------------------------------------------------
@@ -86,6 +106,8 @@ class WorldContactListener: ContactListener {
 
     }
 
-    fun interface ContactBlock { fun block(bodyA: AbstractBody, bodyB: AbstractBody) }
+    fun interface ContactBlock { fun block(bodyA: AbstractBody, bodyB: AbstractBody, contact: Contact) }
+    fun interface PreSolveBlock { fun block(bodyA: AbstractBody, bodyB: AbstractBody, contact: Contact, manifold: Manifold) }
+    fun interface PostSolveBlock { fun block(bodyA: AbstractBody, bodyB: AbstractBody, contact: Contact, impulse: ContactImpulse) }
 
 }

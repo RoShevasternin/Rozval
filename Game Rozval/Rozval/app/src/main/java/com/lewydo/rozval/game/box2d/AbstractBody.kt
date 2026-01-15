@@ -4,29 +4,31 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.Contact
+import com.badlogic.gdx.physics.box2d.ContactImpulse
 import com.badlogic.gdx.physics.box2d.FixtureDef
 import com.badlogic.gdx.physics.box2d.Joint
 import com.badlogic.gdx.physics.box2d.JointDef
+import com.badlogic.gdx.physics.box2d.Manifold
 import com.badlogic.gdx.utils.Array
 import com.lewydo.rozval.game.utils.*
 import com.lewydo.rozval.game.utils.actor.setBounds
 import com.lewydo.rozval.game.utils.actor.setOrigin
 import com.lewydo.rozval.game.utils.actor.setPosition
-import com.lewydo.rozval.game.utils.advanced.AdvancedBox2dScreen
+import com.lewydo.rozval.game.utils.advanced.box2d.AdvancedBox2dScreen
 import com.lewydo.rozval.game.utils.advanced.AdvancedGroup
 import com.lewydo.rozval.util.cancelCoroutinesAll
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlin.collections.onEach
 
 abstract class AbstractBody: Destroyable {
-
     abstract val screenBox2d: AdvancedBox2dScreen
     abstract val name       : String
     abstract val bodyDef    : BodyDef
     abstract val fixtureDef : FixtureDef
 
-    open var actor     : AdvancedGroup? = null
-    open val collisionList              = mutableListOf<String>()
+    open var actor: AdvancedGroup? = null
+    open val collisionList         = mutableListOf<String>()
 
     open var originalId: String = BodyId.NONE
     open var id        : String = BodyId.NONE
@@ -47,6 +49,8 @@ abstract class AbstractBody: Destroyable {
 
     var beginContactBlockArray = Array<ContactBlock>()
     var endContactBlockArray   = Array<ContactBlock>()
+    var preSolveBlockArray     = Array<PreSolveBlock>()
+    var postSolveBlockArray    = Array<PostSolveBlock>()
     var renderBlockArray       = Array<RenderBlock>()
 
     var isDestroyActor = true
@@ -56,9 +60,10 @@ abstract class AbstractBody: Destroyable {
         transformActor()
     }
 
-    open fun beginContact(contactBody: AbstractBody, contact: Contact) = beginContactBlockArray.onEach { it.block(contactBody, contact) }
-
-    open fun endContact(contactBody: AbstractBody, contact: Contact) = endContactBlockArray.onEach { it.block(contactBody, contact) }
+    open fun beginContact(contactBody: AbstractBody, contact: Contact) = beginContactBlockArray.forEach { it.block(contactBody, contact) }
+    open fun endContact(contactBody: AbstractBody, contact: Contact) = endContactBlockArray.forEach { it.block(contactBody, contact) }
+    open fun preSolve(contactBody: AbstractBody, contact: Contact, manifold: Manifold)  = preSolveBlockArray.forEach { it.block(contactBody, contact, manifold) }
+    open fun postSolve(contactBody: AbstractBody, contact: Contact, impulse: ContactImpulse) = postSolveBlockArray.forEach { it.block(contactBody, contact, impulse) }
 
     override fun destroy() {
         if (body != null) {
@@ -84,14 +89,14 @@ abstract class AbstractBody: Destroyable {
         }
     }
 
-    fun create(x: Float, y: Float, w: Float, h: Float) {
+    open fun create(x: Float, y: Float, w: Float, h: Float) {
         if (body == null) {
             position.set(x, y)
             size.set(w, h)
-            scale  = size.x.scaledToB2
+            scale  = size.x.scaledToWorld
             center = screenBox2d.worldUtil.bodyEditor.getOrigin(name, scale)
 
-            bodyDef.position.set(tmpVector2.set(position).scaledToB2.add(center))
+            bodyDef.position.set(tmpVector2.set(position).scaledToWorld.add(center))
 
             body = screenBox2d.worldUtil.world.createBody(bodyDef).apply { userData = this@AbstractBody }
             screenBox2d.worldUtil.bodyEditor.attachFixture(body!!, name, fixtureDef, scale)
@@ -109,7 +114,7 @@ abstract class AbstractBody: Destroyable {
 
     private fun addActor() {
         actor?.apply {
-            screenBox2d.stageBox2d.addActor(this)
+            screenBox2d.stageWorld.addActor(this)
             setBounds(position, size)
         }
     }
@@ -136,7 +141,9 @@ abstract class AbstractBody: Destroyable {
     // SAM
     // ---------------------------------------------------
 
-    fun interface ContactBlock { fun block(body: AbstractBody, contact: Contact) }
+    fun interface ContactBlock { fun block(contactBody: AbstractBody, contact: Contact) }
+    fun interface PreSolveBlock { fun block(contactBody: AbstractBody, contact: Contact, manifold: Manifold) }
+    fun interface PostSolveBlock { fun block(contactBody: AbstractBody, contact: Contact, impulse: ContactImpulse) }
     fun interface RenderBlock { fun block(deltaTime: Float) }
 
 }

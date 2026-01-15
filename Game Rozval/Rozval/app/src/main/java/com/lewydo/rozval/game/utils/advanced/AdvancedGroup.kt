@@ -32,10 +32,10 @@ abstract class AdvancedGroup : WidgetGroup(), Disposable {
     val postDrawArray = Array<Drawer>()
     val disposableSet = mutableSetOf<Disposable>()
 
-    val Vector2.scaled        get() = sizeScaler.scaled(this)
-    val Vector2.scaledInverse get() = sizeScaler.scaledInverse(this)
-    val Float.scaled          get() = sizeScaler.scaled(this)
-    val Float.scaledInverse   get() = sizeScaler.scaledInverse(this)
+    val Vector2.toActual get() = sizeScaler.toActual(this)
+    val Vector2.toDesign get() = sizeScaler.toDesign(this)
+    val Float.toActual   get() = sizeScaler.toActual(this)
+    val Float.toDesign   get() = sizeScaler.toDesign(this)
 
     private val onceInit = AtomicBoolean(true)
 
@@ -207,7 +207,7 @@ abstract class AdvancedGroup : WidgetGroup(), Disposable {
     }
 
     protected fun Actor.setBoundsScaled(x: Float, y: Float, width: Float, height: Float) {
-        setBounds(x.scaled, y.scaled, width.scaled, height.scaled)
+        setBounds(x.toActual, y.toActual, width.toActual, height.toActual)
     }
 
     protected fun Actor.setBoundsScaled(position: Vector2, size: Vector2) {
@@ -215,7 +215,7 @@ abstract class AdvancedGroup : WidgetGroup(), Disposable {
     }
 
     protected fun Actor.setSizeScaled(width: Float, height: Float) {
-        setSize(width.scaled, height.scaled)
+        setSize(width.toActual, height.toActual)
     }
 
 

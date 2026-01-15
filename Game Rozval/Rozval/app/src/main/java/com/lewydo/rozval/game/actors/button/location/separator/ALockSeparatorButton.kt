@@ -83,6 +83,7 @@ class ALockSeparatorButton(
 
     private fun AHorizontalGroup.addStarNecessary() {
         starNecessary.height = 52f
+        starNecessary.width  = 1f
         addActor(starNecessary)
     }
 
@@ -94,6 +95,7 @@ class ALockSeparatorButton(
 
     private fun AHorizontalGroup.addKeyNecessary() {
         keyNecessary.height = 52f
+        keyNecessary.width  = 1f
         addActor(keyNecessary)
     }
 

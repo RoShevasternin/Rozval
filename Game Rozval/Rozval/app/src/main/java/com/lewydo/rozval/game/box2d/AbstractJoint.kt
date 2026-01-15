@@ -4,7 +4,7 @@ import com.badlogic.gdx.physics.box2d.Joint
 import com.badlogic.gdx.physics.box2d.JointDef
 import com.lewydo.rozval.game.utils.GameColor
 import com.lewydo.rozval.game.utils.JOINT_WIDTH
-import com.lewydo.rozval.game.utils.advanced.AdvancedBox2dScreen
+import com.lewydo.rozval.game.utils.advanced.box2d.AdvancedBox2dScreen
 import com.lewydo.rozval.game.utils.scaledToUI
 import com.lewydo.rozval.util.cancelCoroutinesAll
 import kotlinx.coroutines.CoroutineScope

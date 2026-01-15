@@ -30,17 +30,16 @@ class AStarsNecessary(
     private val starCountLbl = Label(starCount.toString(), labelStyle)
 
     override fun addActorsOnGroup() {
-        gap = 7f.scaled
+        gap = 7f.toActual
         addStars()
     }
 
     // Actors ------------------------------------------------------------------------
 
     private fun addStars() {
-        starImg.debug()
         starImg.setSizeScaled(30f, 30f)
 
-        starCountLbl.height = 30f.scaled
+        starCountLbl.height = 30f.toActual
         starCountLbl.setAlignment(Align.center)
 
         addActors(starImg, starCountLbl)

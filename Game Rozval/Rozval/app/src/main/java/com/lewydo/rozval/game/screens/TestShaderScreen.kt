@@ -16,7 +16,6 @@ import com.lewydo.rozval.game.actors.shader.AScreenShot
 import com.lewydo.rozval.game.actors.shader.ATestShader
 import com.lewydo.rozval.game.utils.*
 import com.lewydo.rozval.game.utils.actor.animHide
-import com.lewydo.rozval.game.utils.actor.disable
 import com.lewydo.rozval.game.utils.advanced.AdvancedGroup
 import com.lewydo.rozval.game.utils.advanced.AdvancedScreen
 import com.lewydo.rozval.game.utils.advanced.AdvancedStage
@@ -37,7 +36,7 @@ class TestShaderScreen: AdvancedScreen() {
     private val scroll   = ScrollPane(tmpGroup)
 
     override fun show() {
-        setBackBackground(gdxGame.assetsAll.LVL_1.region)
+        setBackBackground(gdxGame.assetsAll.listBackgroundLVL.first())
         //setBackBackground(drawerUtil.getRegion(Color.GRAY))
         //setUIBackground(game.assetsAll.LVL_1.region)
         super.show()
@@ -197,8 +196,9 @@ class TestShaderScreen: AdvancedScreen() {
         lblFPS.setText("FPS: " + Gdx.graphics.framesPerSecond)
     }
 
-    override fun hideScreen(block: Block) {
-        stageBack.root.animHide(TIME_ANIM_SCREEN) { block.invoke() }
+    override fun animHide(blockEnd: Block) {
+        stageBackScreen.root.animHide(TIME_ANIM_SCREEN) { blockEnd() }
     }
 
+    override fun animShow(blockEnd: Block) {}
 }

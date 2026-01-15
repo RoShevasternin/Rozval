@@ -17,16 +17,19 @@ class MenuMainPanel(_screen: AdvancedScreen): AbstractMainPanel(_screen) {
     private val labelStyle40 = LabelStyle(font40, GameColor.white)
 
     private val exitBtn      = AButton(screen, AButton.Type.Exit)
-    private val bonusGameBtn = AButton(screen, AButton.Type.BonusGame)
+    private val getKeysBtn   = AButton(screen, AButton.Type.GetKeys)
+    private val marketBtn    = AButton(screen, AButton.Type.Market)
     private val starCounter  = AStarCounter(screen, labelStyle40)
     private val keyCounter   = AKeyCounter(screen, labelStyle40)
 
-    var exitBtnBlock      = {}
-    var bonusGameBtnBlock = {}
+    var exitBtnBlock    = {}
+    var getKeysBtnBlock = {}
+    var marketBtnBlock  = {}
 
     override fun AdvancedGroup.addActorsOnParentGroup() {
         addExitBtn()
-        addBonusGameBtn()
+        addGetKeysBtn()
+        addMarketBtn()
         addStar()
         addKey()
     }
@@ -41,11 +44,19 @@ class MenuMainPanel(_screen: AdvancedScreen): AbstractMainPanel(_screen) {
         }
     }
 
-    private fun AdvancedGroup.addBonusGameBtn() {
-        addActor(bonusGameBtn)
-        bonusGameBtn.apply {
-            setBounds(5f, 825f, 150f, 96f)
-            setOnClickListener { bonusGameBtnBlock() }
+    private fun AdvancedGroup.addGetKeysBtn() {
+        addActor(getKeysBtn)
+        getKeysBtn.apply {
+            setBounds(5f, 739f, 150f, 116f)
+            setOnClickListener { getKeysBtnBlock() }
+        }
+    }
+
+    private fun AdvancedGroup.addMarketBtn() {
+        addActor(marketBtn)
+        marketBtn.apply {
+            setBounds(5f, 603f, 150f, 116f)
+            setOnClickListener { marketBtnBlock() }
         }
     }
 

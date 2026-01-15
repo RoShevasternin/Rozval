@@ -104,7 +104,7 @@ class ABlurBack_OLD(
     }
 
     private fun captureScreenBack(batch: Batch) {
-        screen.viewportBack.apply()
+        screen.viewportBackScreen.apply()
         vecGroupPosition.set(localToStageCoordinates(vecTmp.set(0f, 0f)))
 
         // Отримуємо екранні координати (перетворюємо їх у пікселі)
@@ -132,7 +132,7 @@ class ABlurBack_OLD(
 
         batch.withMatrix(camera.combined, identityMatrix) {
             isVisible = false
-            screen.stageBack.root.draw(batch, 1f)
+            screen.stageBackScreen.root.draw(batch, 1f)
             isVisible = true
         }
 

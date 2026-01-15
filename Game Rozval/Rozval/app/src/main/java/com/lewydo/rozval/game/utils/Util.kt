@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
@@ -12,6 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.viewport.Viewport
 import com.lewydo.rozval.game.GDXGame
+import com.lewydo.rozval.game.utils.camera.CameraAnimator
+import com.lewydo.rozval.game.utils.camera.CameraController
 
 typealias Block = () -> Unit
 typealias Acts = Actions
@@ -41,17 +44,17 @@ fun runGDX(block: Block) {
     Gdx.app.postRunnable { block.invoke() }
 }
 
-fun Float.divOr0(num: Float): Float = if (num != 0f) this / num else 0f
+fun Float.divOr(num: Float, or: Float): Float = if (this != 0f && num != 0f) this / num else or
 
-fun Vector2.divOr0(scalar: Float): Vector2 {
-    x = x.divOr0(scalar)
-    y = y.divOr0(scalar)
+fun Vector2.divOr(scalar: Float, or: Float): Vector2 {
+    x = x.divOr(scalar, or)
+    y = y.divOr(scalar, or)
     return this
 }
 
-fun Vector2.divOr0(scalar: Vector2): Vector2 {
-    x = x.divOr0(scalar.x)
-    y = y.divOr0(scalar.y)
+fun Vector2.divOr(scalar: Vector2, or: Float): Vector2 {
+    x = x.divOr(scalar.x, or)
+    y = y.divOr(scalar.y, or)
     return this
 }
 

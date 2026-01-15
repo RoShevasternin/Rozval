@@ -1,5 +1,6 @@
 package com.lewydo.rozval.game.box2d
 
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.Joint
@@ -8,10 +9,10 @@ import com.badlogic.gdx.utils.Disposable
 import com.lewydo.rozval.game.utils.GameColor
 import com.lewydo.rozval.game.utils.SizeScaler
 import com.lewydo.rozval.game.utils.actor.setBounds
-import com.lewydo.rozval.game.utils.advanced.AdvancedBox2dScreen
+import com.lewydo.rozval.game.utils.advanced.box2d.AdvancedBox2dScreen
 import com.lewydo.rozval.game.utils.advanced.AdvancedGroup
 import com.lewydo.rozval.game.utils.disposeAll
-import com.lewydo.rozval.game.utils.scaledToB2
+import com.lewydo.rozval.game.utils.scaledToWorld
 import com.lewydo.rozval.game.utils.scaledToUI
 import com.lewydo.rozval.util.cancelCoroutinesAll
 import com.lewydo.rozval.util.log
@@ -27,13 +28,13 @@ abstract class AbstractBodyGroup: Destroyable {
     val disposableSet      = mutableSetOf<Disposable>()
     val destroyableSet     = mutableSetOf<Destroyable>()
 
-    val bodyList get()  = _bodyList.toList()
+    val bodyList  get() = _bodyList.toList()
     val actorList get() = _actorList.toList()
 
-    val Vector2.scaled        get() = sizeScaler.scaled(this)
-    val Vector2.scaledInverse get() = sizeScaler.scaledInverse(this)
-    val Float.scaled          get() = sizeScaler.scaled(this)
-    val Float.scaledInverse   get() = sizeScaler.scaledInverse(this)
+    val Vector2.toActual get() = sizeScaler.toActual(this)
+    val Vector2.toDesign get() = sizeScaler.toDesign(this)
+    val Float.toActual   get() = sizeScaler.toActual(this)
+    val Float.toDesign   get() = sizeScaler.toDesign(this)
 
     var coroutine: CoroutineScope? = null
         private set
@@ -41,12 +42,15 @@ abstract class AbstractBodyGroup: Destroyable {
     val position = Vector2()
     val size     = Vector2()
 
+    private val tmpVector    = Vector2()
     private val tmpPositionA = Vector2()
     private val tmpPositionB = Vector2()
     private val tmpAnchorA   = Vector2()
     private val tmpAnchorB   = Vector2()
 
-    val colorJoint = GameColor.background//joint.cpy()
+    private val tmpColor = Color()
+
+    val colorJoint = GameColor.joint
 
     open fun create(x: Float, y: Float, w: Float, h: Float) {
         position.set(x,y)
@@ -66,7 +70,8 @@ abstract class AbstractBodyGroup: Destroyable {
     }
 
     fun createBody(body: AbstractBody, pos: Vector2, size: Vector2) {
-        body.create(position.cpy().add(pos.scaled), size.scaled)
+        tmpVector.set(position)
+        body.create(tmpVector.add(pos.toActual), size.toActual)
         _bodyList.add(body)
         body.actor?.let { _actorList.add(it) }
     }
@@ -80,8 +85,9 @@ abstract class AbstractBodyGroup: Destroyable {
     }
 
     fun createBodyGroup(bodyGroup: AbstractBodyGroup, pos: Vector2, size: Vector2) {
-        val resultPosition = position.cpy().add(pos.scaled)
-        val resultSize     = size.scaled
+        tmpVector.set(position)
+        val resultPosition = tmpVector.add(pos.toActual)
+        val resultSize     = size.toActual
 
         bodyGroup.create(resultPosition.x, resultPosition.y, resultSize.x, resultSize.y)
         destroyableSet.add(bodyGroup)
@@ -91,10 +97,11 @@ abstract class AbstractBodyGroup: Destroyable {
         createBodyGroup(bodyGroup, Vector2(x, y), Vector2(w, h))
     }
 
-    protected fun Vector2.subCenter(body: Body): Vector2 = this.scaled.scaledToB2.sub((body.userData as AbstractBody).center)
+    protected fun Vector2.subCenter(body: Body): Vector2 = this.toActual.scaledToWorld.sub((body.userData as AbstractBody).center)
 
-    protected fun AdvancedGroup.setBoundsStandartBG(x: Float, y: Float, width: Float, height: Float) {
-        setBounds(position.cpy().add(Vector2(x,y).scaled), Vector2(width, height).scaled)
+    protected fun AdvancedGroup.setBoundsScaledBG(x: Float, y: Float, width: Float, height: Float) {
+        tmpVector.set(position)
+        setBounds(tmpVector.add(Vector2(x,y).toActual), Vector2(width, height).toActual)
         _actorList.add(this)
     }
 
@@ -108,7 +115,7 @@ abstract class AbstractBodyGroup: Destroyable {
         screenBox2d.drawerUtil.drawer.line(
             tmpPositionA.set(bodyA.body?.position).add(tmpAnchorA.set(anchorA).subCenter(bodyA.body!!)).scaledToUI,
             tmpPositionB.set(bodyB.body?.position).add(tmpAnchorB.set(anchorB).subCenter(bodyB.body!!)).scaledToUI,
-            colorJoint.apply { a = alpha }, 1f
+            tmpColor.set(colorJoint).apply { a = alpha }, 1f
         )
     }
 

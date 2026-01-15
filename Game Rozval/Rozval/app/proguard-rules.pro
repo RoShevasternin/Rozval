@@ -6,6 +6,13 @@
 -dontwarn android.support.**
 -dontwarn com.badlogic.gdx.backends.android.AndroidFragmentApplication
 
+-keep public class com.badlogic.gdx.scenes.scene2d.** { *; }
+-keep public class com.badlogic.gdx.graphics.g2d.BitmapFont { *; }
+-keep public class com.badlogic.gdx.graphics.Color { *; }
+
+-keepattributes LineNumberTable,SourceFile
+-renamesourcefileattribute SourceFile
+
 -keepclassmembers class com.badlogic.gdx.physics.box2d.World {
    boolean contactFilter(long, long);
    boolean getUseDefaultContactFilter();
@@ -16,10 +23,3 @@
    boolean reportFixture(long);
    float   reportRayFixture(long, float, float, float, float, float);
 }
-
--keep public class com.badlogic.gdx.scenes.scene2d.** { *; }
--keep public class com.badlogic.gdx.graphics.g2d.BitmapFont { *; }
--keep public class com.badlogic.gdx.graphics.Color { *; }
-
--keepattributes LineNumberTable,SourceFile
--renamesourcefileattribute SourceFile

@@ -39,7 +39,7 @@ class GameMainPanel(_screen: AdvancedScreen): AbstractMainPanel(_screen) {
         addActor(menuBtn)
         menuBtn.apply {
             setBounds(18f, 35f, 124f, 51f)
-            setOnClickListener(menuBtnBlock)
+            setOnClickListener { menuBtnBlock.invoke() }
         }
     }
 
