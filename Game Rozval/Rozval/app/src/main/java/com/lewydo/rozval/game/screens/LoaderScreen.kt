@@ -1,12 +1,19 @@
 package com.lewydo.rozval.game.screens
 
+import com.badlogic.gdx.scenes.scene2d.Group
 import com.lewydo.rozval.game.actors.AMainLoader
 import com.lewydo.rozval.game.manager.MusicManager
 import com.lewydo.rozval.game.manager.ParticleEffectManager
 import com.lewydo.rozval.game.manager.SoundManager
 import com.lewydo.rozval.game.manager.SpriteManager
 import com.lewydo.rozval.game.utils.Block
+import com.lewydo.rozval.game.utils.HEIGHT_UI
 import com.lewydo.rozval.game.utils.TIME_ANIM_SCREEN
+import com.lewydo.rozval.game.utils.WIDTH_UI
+import com.lewydo.rozval.game.utils.actor.HAlign
+import com.lewydo.rozval.game.utils.actor.VAlign
+import com.lewydo.rozval.game.utils.actor.addActorAligned
+import com.lewydo.rozval.game.utils.actor.addAndFillActor
 import com.lewydo.rozval.game.utils.actor.animHide
 import com.lewydo.rozval.game.utils.advanced.AdvancedScreen
 import com.lewydo.rozval.game.utils.advanced.AdvancedStage
@@ -38,8 +45,10 @@ class LoaderScreen : AdvancedScreen() {
         isFinish()
     }
 
-    override fun AdvancedStage.addActorsOnStageUI() {
-        addAndFillActor(aMain)
+    override fun Group.addActorsOnStageUI() {
+        //aMain.debug()
+        aMain.setSize(WIDTH_UI, HEIGHT_UI)
+        addActorAligned(aMain, HAlign.CENTER, VAlign.CENTER)
     }
 
     override fun animHide(blockEnd: Block) {
@@ -123,9 +132,7 @@ class LoaderScreen : AdvancedScreen() {
 //                coff      = 0.15f
 //            } }
 
-            animHide {
-                gdxGame.navigationManager.navigate(GameScreen::class.java.name)//MenuScreen::class.java.name)//TestShaderScreen::class.java.name)//
-            }
+            animHide { gdxGame.navigationManager.navigate(ThanksScreen::class.java.name) }
         }
     }
 

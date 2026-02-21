@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.utils.ScreenUtils
+import com.lewydo.rozval.game.utils.actor.addAndFillActor
 import com.lewydo.rozval.game.utils.actor.getTopParent
 import com.lewydo.rozval.game.utils.advanced.AdvancedGroup
 import com.lewydo.rozval.game.utils.advanced.AdvancedScreen
@@ -104,7 +105,7 @@ class ABlurBack_OLD(
     }
 
     private fun captureScreenBack(batch: Batch) {
-        screen.viewportBackScreen.apply()
+        screen.viewportBack.apply()
         vecGroupPosition.set(localToStageCoordinates(vecTmp.set(0f, 0f)))
 
         // Отримуємо екранні координати (перетворюємо їх у пікселі)
@@ -132,7 +133,7 @@ class ABlurBack_OLD(
 
         batch.withMatrix(camera.combined, identityMatrix) {
             isVisible = false
-            screen.stageBackScreen.root.draw(batch, 1f)
+            screen.stageBack.root.draw(batch, 1f)
             isVisible = true
         }
 

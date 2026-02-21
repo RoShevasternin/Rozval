@@ -12,6 +12,8 @@ import com.lewydo.rozval.game.actors.autoLayout.AutoLayout
 import com.lewydo.rozval.game.actors.button.AButton
 import com.lewydo.rozval.game.actors.button.location.actors.AKeysNecessary
 import com.lewydo.rozval.game.actors.button.location.actors.AStarsNecessary
+import com.lewydo.rozval.game.utils.actor.addAndFillActor
+import com.lewydo.rozval.game.utils.actor.addAndFillActors
 import com.lewydo.rozval.game.utils.actor.animHide
 import com.lewydo.rozval.game.utils.actor.animShow
 import com.lewydo.rozval.game.utils.actor.disable

@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Align
 import com.lewydo.rozval.game.actors.autoLayout.AHorizontalGroup
 import com.lewydo.rozval.game.actors.autoLayout.AutoLayout
 import com.lewydo.rozval.game.utils.SizeScaler
+import com.lewydo.rozval.game.utils.actor.addActors
 import com.lewydo.rozval.game.utils.advanced.AdvancedScreen
 import com.lewydo.rozval.game.utils.gdxGame
 import com.lewydo.rozval.util.log

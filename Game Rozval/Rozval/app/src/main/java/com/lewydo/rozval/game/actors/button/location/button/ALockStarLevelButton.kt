@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.lewydo.rozval.game.actors.button.location.actors.AStarsNecessary
 import com.lewydo.rozval.game.actors.button.location.separator.AAvailableSeparatorButton
+import com.lewydo.rozval.game.utils.actor.addAndFillActor
 import com.lewydo.rozval.game.utils.actor.animHide
 import com.lewydo.rozval.game.utils.actor.animShow
 import com.lewydo.rozval.game.utils.advanced.AdvancedScreen

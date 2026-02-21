@@ -29,6 +29,12 @@ class SoundManager(var assetManager: AssetManager) {
 
         click(SoundData("sound/click.wav")),
 
+        heart          (SoundData("sound/thanks/heart.mp3")),
+        hide           (SoundData("sound/thanks/hide.mp3")),
+        show_lewydo_tm (SoundData("sound/thanks/show_lewydo_tm.mp3")),
+        show_libgdx    (SoundData("sound/thanks/show_libgdx.mp3")),
+        LibGDX         (SoundData("sound/thanks/LibGDX.mp3")),
+
     }
 
     data class SoundData(

@@ -7,12 +7,15 @@ import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Disposable
-import com.badlogic.gdx.utils.viewport.FitViewport
+import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.lewydo.rozval.MainActivity
 import com.lewydo.rozval.game.utils.*
+import com.lewydo.rozval.game.utils.actor.addAndFillActor
 import com.lewydo.rozval.game.utils.font.FontGenerator
 import com.lewydo.rozval.game.utils.font.FontGenerator.Companion.FontPath
 import com.lewydo.rozval.util.cancelCoroutinesAll
@@ -26,10 +29,10 @@ abstract class AdvancedScreen(
     val HEIGHT: Float = HEIGHT_UI
 ) : ScreenAdapter(), IInputAdapter {
 
-    val viewportBackScreen by lazy { ScreenViewport() }
-    val stageBackScreen    by lazy { AdvancedStage(viewportBackScreen) }
+    val viewportBack by lazy { ScreenViewport() }
+    val stageBack    by lazy { AdvancedStage(viewportBack) }
 
-    val viewportUI by lazy { FitViewport(WIDTH, HEIGHT) }
+    val viewportUI by lazy { ExtendViewport(WIDTH, HEIGHT) }
     val stageUI    by lazy { AdvancedStage(viewportUI) }
 
     val inputMultiplexer    = InputMultiplexer()
@@ -48,27 +51,27 @@ abstract class AdvancedScreen(
 
     val fontGenerator_LondrinaSolid_Regular = FontGenerator(FontPath.LondrinaSolid_Regular)
 
-    override fun resize(width: Int, height: Int) {
-        viewportBackScreen.update(width, height, true)
-        viewportUI.update(width, height, true)
-
-        scalerUItoScreen.calculateScale(scalerVector.set(width.toFloat(), height.toFloat()))
-    }
-
     override fun show() {
         log("show AdvancedScreen: $currentClassName")
-        stageBackScreen.addAndFillActor(backBackgroundImage)
-        stageUI.addAndFillActor(uiBackgroundImage)
+        val screenWidth  = Gdx.graphics.width
+        val screenHeight = Gdx.graphics.height
+        scalerUItoScreen.calculateScale(scalerVector.set(screenWidth.toFloat(), screenHeight.toFloat()))
 
-        stageBackScreen.addActorsOnStageBackScreen()
-        stageUI.addActorsOnStageUI()
+        stageBack.update(screenWidth, screenHeight, true)
+        stageUI.update(screenWidth, screenHeight - MainActivity.statusBarHeight, true)
 
-        Gdx.input.inputProcessor = inputMultiplexer.apply { addProcessors(this@AdvancedScreen, stageUI, stageBackScreen) }
+        stageBack.root.addAndFillActor(backBackgroundImage)
+        stageUI.root.addAndFillActor(uiBackgroundImage)
+
+        stageBack.root.addActorsOnStageBack()
+        stageUI.root.addActorsOnStageUI()
+
+        Gdx.input.inputProcessor = inputMultiplexer.apply { addProcessors(this@AdvancedScreen, stageUI, stageBack) }
         Gdx.input.setCatchKey(Input.Keys.BACK, true)
     }
 
     override fun render(delta: Float) {
-        stageBackScreen.render()
+        stageBack.render()
         stageUI.render()
         drawerUtil.update()
     }
@@ -76,7 +79,7 @@ abstract class AdvancedScreen(
     override fun dispose() {
         log("dispose AdvancedScreen: $currentClassName")
         disposeAll(
-            stageBackScreen, stageUI, drawerUtil,
+            stageBack, stageUI, drawerUtil,
             fontGenerator_LondrinaSolid_Regular
         )
         disposableSet.disposeAll()
@@ -98,8 +101,8 @@ abstract class AdvancedScreen(
     abstract fun animShow(blockEnd: Block = {})
     abstract fun animHide(blockEnd: Block = {})
 
-    open fun AdvancedStage.addActorsOnStageBackScreen() {}
-    open fun AdvancedStage.addActorsOnStageUI() {}
+    open fun Group.addActorsOnStageBack() {}
+    open fun Group.addActorsOnStageUI() {}
 
     fun setBackBackground(region: TextureRegion) {
         backBackgroundImage.drawable = TextureRegionDrawable(region)

@@ -141,71 +141,6 @@ abstract class AdvancedGroup : WidgetGroup(), Disposable {
         restoreTransforms(mapIsTransform)
     }
 
-    fun addAlignActor(
-        actor: Actor,
-        alignmentHorizontal: AlignmentHorizontal = AlignmentHorizontal.START,
-        alignmentVertical: AlignmentVertical = AlignmentVertical.BOTTOM,
-    ) {
-        addActor(actor)
-
-        // START | BOTTOM (DEFAULT)
-        var newX = 0f
-        var newY = 0f
-
-        when (alignmentHorizontal to alignmentVertical) {
-            AlignmentHorizontal.START to AlignmentVertical.CENTER  -> {
-                newY = (height / 2) - (actor.height / 2)
-            }
-            AlignmentHorizontal.START to AlignmentVertical.TOP     -> {
-                newY = height - actor.height
-            }
-            AlignmentHorizontal.CENTER to AlignmentVertical.BOTTOM -> {
-                newX = (width / 2) - (actor.width / 2)
-            }
-            AlignmentHorizontal.CENTER to AlignmentVertical.CENTER -> {
-                newX = (width / 2) - (actor.width / 2)
-                newY = (height / 2) - (actor.height / 2)
-            }
-            AlignmentHorizontal.CENTER to AlignmentVertical.TOP    -> {
-                newX = (width / 2) - (actor.width / 2)
-                newY = height - actor.height
-            }
-            AlignmentHorizontal.END to AlignmentVertical.BOTTOM    -> {
-                newX = width - actor.width
-            }
-            AlignmentHorizontal.END to AlignmentVertical.CENTER    -> {
-                newX = width - actor.width
-                newY = (height / 2) - (actor.height / 2)
-            }
-            AlignmentHorizontal.END to AlignmentVertical.TOP       -> {
-                newX = width - actor.width
-                newY = height - actor.height
-            }
-        }
-        actor.setPosition(newX, newY)
-    }
-
-    fun addAndFillActor(actor: Actor) {
-        addActor(actor)
-        actor.setSize(width, height)
-    }
-
-    fun addAndFillActors(actors: List<Actor>) {
-        actors.forEach { addActor(it.also { a -> a.setSize(width, height) }) }
-    }
-
-    fun addAndFillActors(vararg actors: Actor) {
-        actors.forEach { addActor(it.also { a -> a.setSize(width, height) }) }
-    }
-
-    fun addActors(vararg actors: Actor) {
-        actors.forEach { addActor(it) }
-    }
-
-    fun addActors(actors: List<Actor>) {
-        actors.forEach { addActor(it) }
-    }
-
     protected fun Actor.setBoundsScaled(x: Float, y: Float, width: Float, height: Float) {
         setBounds(x.toActual, y.toActual, width.toActual, height.toActual)
     }
@@ -217,10 +152,6 @@ abstract class AdvancedGroup : WidgetGroup(), Disposable {
     protected fun Actor.setSizeScaled(width: Float, height: Float) {
         setSize(width.toActual, height.toActual)
     }
-
-
-    enum class AlignmentHorizontal { START, CENTER, END, }
-    enum class AlignmentVertical { BOTTOM, CENTER, TOP, }
 
     fun interface Drawer {
         fun draw(alpha: Float)

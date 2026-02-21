@@ -11,6 +11,13 @@ import kotlin.times
 class SoundUtil {
 
     val click = AdvancedSound(SoundManager.EnumSound.click.data.sound, 1f)
+
+    val heart           = AdvancedSound(SoundManager.EnumSound.heart.data.sound, 1f)
+    val hide            = AdvancedSound(SoundManager.EnumSound.hide.data.sound, 1f)
+    val show_lewydo_tm  = AdvancedSound(SoundManager.EnumSound.show_lewydo_tm.data.sound, 0.7f)
+    val show_libgdx     = AdvancedSound(SoundManager.EnumSound.show_libgdx.data.sound, 0.5f)
+    val LibGDX          = AdvancedSound(SoundManager.EnumSound.LibGDX.data.sound, 0.33f)
+
     val touch = SoundManager.EnumSound.touch.data.sound
 
     private val boom1 = SoundManager.EnumSound.boom1.data.sound
@@ -28,10 +35,10 @@ class SoundUtil {
 
     var isPause = (volumeLevel <= 0f)
 
-    fun play(advancedSound: AdvancedSound) {
+    fun play(advancedSound: AdvancedSound, playCoff: Float = 1f) {
         if (isPause.not()) {
             advancedSound.apply {
-                sound.play((volumeLevel / 100f) * coff)
+                sound.play(((volumeLevel / 100f) * coff) * playCoff)
             }
         }
     }

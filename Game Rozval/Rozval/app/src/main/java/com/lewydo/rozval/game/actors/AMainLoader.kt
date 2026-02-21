@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.Align
 import com.lewydo.rozval.game.screens.LoaderScreen
 import com.lewydo.rozval.game.utils.GameColor
 import com.lewydo.rozval.game.utils.Layout
+import com.lewydo.rozval.game.utils.actor.addActors
 import com.lewydo.rozval.game.utils.actor.setBounds
 import com.lewydo.rozval.game.utils.advanced.AdvancedGroup
 import com.lewydo.rozval.game.utils.font.FontParameter

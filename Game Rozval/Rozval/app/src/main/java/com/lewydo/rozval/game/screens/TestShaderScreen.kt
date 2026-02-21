@@ -2,6 +2,7 @@ package com.lewydo.rozval.game.screens
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.ui.Image
@@ -15,6 +16,7 @@ import com.lewydo.rozval.game.actors.shader.ABlurBack
 import com.lewydo.rozval.game.actors.shader.AScreenShot
 import com.lewydo.rozval.game.actors.shader.ATestShader
 import com.lewydo.rozval.game.utils.*
+import com.lewydo.rozval.game.utils.actor.addActors
 import com.lewydo.rozval.game.utils.actor.animHide
 import com.lewydo.rozval.game.utils.advanced.AdvancedGroup
 import com.lewydo.rozval.game.utils.advanced.AdvancedScreen
@@ -59,7 +61,7 @@ class TestShaderScreen: AdvancedScreen() {
         })
     }
 
-    override fun AdvancedStage.addActorsOnStageUI() {
+    override fun Group.addActorsOnStageUI() {
         addActor(progress)
         progress.setBounds(420f, 946f, 1080f, 80f)
 
@@ -136,7 +138,7 @@ class TestShaderScreen: AdvancedScreen() {
         addScroll()
     }
 
-    private fun AdvancedStage.addTest() {
+    private fun Group.addTest() {
         val test = ATestShader(this@TestShaderScreen)
         test.debug()
         test.setBounds(400f, 50f, 200f, 315f)
@@ -181,7 +183,7 @@ class TestShaderScreen: AdvancedScreen() {
         }
     }
 
-    private fun AdvancedStage.addScroll() {
+    private fun Group.addScroll() {
         addActor(scroll)
         scroll.setBounds(1263f, 109f, 602f, 707f)
 
@@ -197,7 +199,7 @@ class TestShaderScreen: AdvancedScreen() {
     }
 
     override fun animHide(blockEnd: Block) {
-        stageBackScreen.root.animHide(TIME_ANIM_SCREEN) { blockEnd() }
+        stageBack.root.animHide(TIME_ANIM_SCREEN) { blockEnd() }
     }
 
     override fun animShow(blockEnd: Block) {}

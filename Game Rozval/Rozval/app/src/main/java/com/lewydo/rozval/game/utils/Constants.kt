@@ -20,4 +20,4 @@ const val RADTODEG = (180f / PI).toFloat()
 
 const val JOINT_WIDTH = 1f
 
-const val TIME_ANIM_SCREEN = 0.4f
+const val TIME_ANIM_SCREEN = 0.333f

@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.lewydo.rozval.game.actors.button.location.actors.AStars3
 import com.lewydo.rozval.game.actors.button.AButton
 import com.lewydo.rozval.game.utils.Block
+import com.lewydo.rozval.game.utils.actor.addAndFillActor
 import com.lewydo.rozval.game.utils.actor.disable
 import com.lewydo.rozval.game.utils.actor.setOnClickListener
 import com.lewydo.rozval.game.utils.advanced.AdvancedScreen

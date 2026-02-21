@@ -10,6 +10,8 @@ import com.lewydo.rozval.game.actors.settings.ASetting
 import com.lewydo.rozval.game.utils.Block
 import com.lewydo.rozval.game.utils.GameColor
 import com.lewydo.rozval.game.utils.TIME_ANIM_SCREEN
+import com.lewydo.rozval.game.utils.actor.addAndFillActor
+import com.lewydo.rozval.game.utils.actor.addAndFillActors
 import com.lewydo.rozval.game.utils.actor.animHide
 import com.lewydo.rozval.game.utils.actor.animShow
 import com.lewydo.rozval.game.utils.actor.disable

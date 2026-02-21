@@ -1,7 +1,9 @@
 package com.lewydo.rozval.game.screens
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle
@@ -15,10 +17,16 @@ import com.lewydo.rozval.game.box2d.bodies.BPersik
 import com.lewydo.rozval.game.box2d.bodies.BWood
 import com.lewydo.rozval.game.box2d.bodiesGroup.BGBorders
 import com.lewydo.rozval.game.utils.*
+import com.lewydo.rozval.game.utils.actor.HAlign
+import com.lewydo.rozval.game.utils.actor.VAlign
+import com.lewydo.rozval.game.utils.actor.addActorAligned
+import com.lewydo.rozval.game.utils.actor.addAndFillActor
 import com.lewydo.rozval.game.utils.actor.animDelay
 import com.lewydo.rozval.game.utils.actor.animHide
 import com.lewydo.rozval.game.utils.actor.animShow
+import com.lewydo.rozval.game.utils.actor.setBounds
 import com.lewydo.rozval.game.utils.actor.setOnClickListener
+import com.lewydo.rozval.game.utils.advanced.AdvancedGroup
 import com.lewydo.rozval.game.utils.advanced.box2d.AdvancedBox2dUserScreen
 import com.lewydo.rozval.game.utils.advanced.AdvancedStage
 import com.lewydo.rozval.game.utils.font.FontParameter
@@ -43,7 +51,7 @@ class GameScreen(): AdvancedBox2dUserScreen() {
     private val bgBorders = BGBorders(this)
 
     override fun show() {
-        stageBackScreen.root.color.a = 0f
+        stageBack.root.color.a = 0f
         stageUI.root.color.a   = 0f
 
         setBackBackground(gdxGame.assetsAll.listBackgroundLVL[MenuScreen.LVL_CLICK-1])
@@ -64,7 +72,7 @@ class GameScreen(): AdvancedBox2dUserScreen() {
     override fun animShow(blockEnd: Block) {
         stageUI.root.children.onEach { it.clearActions() }
 
-        stageBackScreen.root.animShow(TIME_ANIM_SCREEN)
+        stageBack.root.animShow(TIME_ANIM_SCREEN)
         stageUI.root.animShow(TIME_ANIM_SCREEN)
 
         stageUI.root.animDelay(TIME_ANIM_SCREEN) { blockEnd() }
@@ -73,23 +81,22 @@ class GameScreen(): AdvancedBox2dUserScreen() {
     override fun animHide(blockEnd: Block) {
         stageUI.root.children.onEach { it.clearActions() }
 
-        stageBackScreen.root.animHide(TIME_ANIM_SCREEN)
+        stageBack.root.animHide(TIME_ANIM_SCREEN)
         stageUI.root.animHide(TIME_ANIM_SCREEN)
 
         stageUI.root.animDelay(TIME_ANIM_SCREEN) { blockEnd() }
     }
 
-    override fun AdvancedStage.addActorsOnStageBackScreen() {
+    override fun Group.addActorsOnStageUI() {
+        addTestFPSandProgress()
+        addBtnReset()
+
         addMainPanel()
     }
 
-    override fun AdvancedStage.addActorsOnStageUI() {
-        addTestFPSandProgress()
-        addBtnReset()
-    }
-
-    override fun AdvancedStage.addActorsOnStageWorld() {
+    override fun Group.addActorsOnStageWorld() {
         //addAndFillActor(Image(drawerUtil.getTexture(GameColor.background)))
+        addActor(Image(gdxGame.assetsAll.GRID).also { it.setSize(WIDTH, HEIGHT) })
 
         create_BGBorders()
         create_BPersik()
@@ -99,25 +106,23 @@ class GameScreen(): AdvancedBox2dUserScreen() {
 
     // Actors ------------------------------------------------------------------------
 
-    private fun AdvancedStage.addMainPanel() {
-        addActor(mainPanel)
-        mainPanel.width  = scalerUItoScreen.toActual(155f)
-        mainPanel.height = height
-        mainPanel.x = this.width - mainPanel.width
-        mainPanel.y = 0f
+    private fun Group.addMainPanel() {
+        mainPanel.setSize(155f, 1080f)
+        addActorAligned(mainPanel, HAlign.END, VAlign.CENTER)
 
         mainPanel.menuBtnBlock = {
             animHide { gdxGame.navigationManager.back() }
         }
     }
 
-    private fun AdvancedStage.addTestFPSandProgress() {
+    private fun Group.addTestFPSandProgress() {
         addActor(progress)
         progress.setBounds(159f, 944f, 698f, 106f)
 
+        addActor(Image(drawerUtil.getTexture(GameColor.background)).apply { setBounds(857f, 973f, 164f, 46f) })
         addActor(lblFPS)
         lblFPS.apply {
-            setBounds(878f, 71f, 164f, 46f)
+            setBounds(857f, 973f, 164f, 46f)
             setAlignment(Align.center)
         }
 
@@ -128,7 +133,7 @@ class GameScreen(): AdvancedBox2dUserScreen() {
         }
     }
 
-    private fun AdvancedStage.addBtnReset() {
+    private fun Group.addBtnReset() {
         addActor(reset)
         reset.setBounds(39f, 944f, 106f, 106f)
 

@@ -1,5 +1,6 @@
 package com.lewydo.rozval.game.utils.font
 
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter
 
@@ -24,6 +25,17 @@ class FontParameter : FreeTypeFontParameter() {
     }
     fun setCharacters(chars: String): FontParameter {
         this.characters = chars
+        return this
+    }
+    fun setBorder(width: Float, color: Color): FontParameter {
+        this.borderWidth = width
+        this.borderColor = color
+        return this
+    }
+    fun setShadow(offsetX: Int, offsetY: Int, color: Color): FontParameter {
+        this.shadowOffsetX = offsetX
+        this.shadowOffsetY = offsetY
+        this.shadowColor   = color
         return this
     }
 

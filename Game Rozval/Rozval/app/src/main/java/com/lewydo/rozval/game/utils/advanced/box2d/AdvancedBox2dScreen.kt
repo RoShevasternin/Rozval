@@ -1,7 +1,10 @@
 package com.lewydo.rozval.game.utils.advanced.box2d
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.input.GestureDetector
+import com.badlogic.gdx.scenes.scene2d.Group
+import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.lewydo.rozval.game.box2d.WorldUtil
 import com.lewydo.rozval.game.utils.HEIGHT_UI
@@ -24,9 +27,9 @@ abstract class AdvancedBox2dScreen(
     val worldH : Float = HEIGHT_WORLD,
 ): AdvancedScreen(uiW, uiH) {
 
-    val viewportDebug by lazy { FitViewport(worldW, worldH) }
+    val viewportDebug by lazy { ExtendViewport(worldW, worldH) }
 
-    val viewportWorld by lazy { FitViewport(WIDTH, HEIGHT) }
+    val viewportWorld by lazy { ExtendViewport(WIDTH, HEIGHT) }
     val stageWorld    by lazy { AdvancedStage(viewportWorld) }
 
     protected val cameraGestureListener by lazy {
@@ -39,7 +42,14 @@ abstract class AdvancedBox2dScreen(
 
     override fun show() {
         super.show()
-        stageWorld.addActorsOnStageWorld()
+
+        val screenWidth  = Gdx.graphics.width
+        val screenHeight = Gdx.graphics.height
+
+        stageWorld.update(screenWidth, screenHeight, true)
+        viewportDebug.update(screenWidth, screenHeight, true)
+
+        stageWorld.root.addActorsOnStageWorld()
 
         inputMultiplexer.clear()
         inputMultiplexer.addProcessors(
@@ -47,30 +57,26 @@ abstract class AdvancedBox2dScreen(
             stageUI,           // Кнопки інтерфейсу мають найвищий пріоритет
             gestureDetector,    // Камера рухається, якщо ми НЕ натиснули на кнопку в UI
             stageWorld,        // Об'єкти в ігровому світі (наприклад, блоки)
-            stageBackScreen          // Фон
+            stageBack          // Фон
         )
 
         cameraController.add(viewportWorld.camera as OrthographicCamera)
-    }
-
-    override fun resize(width: Int, height: Int) {
-        viewportDebug.update(width, height, true)
-        viewportWorld.update(width, height, true)
-        super.resize(width, height)
     }
 
     override fun render(delta: Float) {
         worldUtil.update(delta)
         cameraController.update(delta)
 
-        stageBackScreen.render()
+        stageBack.render()
         stageWorld.render()
         stageUI.render()
 
         drawerUtil.update()
 
-        viewportDebug.camera.update()
-        worldUtil.debug(viewportDebug.camera.combined)
+        if (WorldUtil.isDebug) {
+            viewportDebug.apply()
+            worldUtil.debug(viewportDebug.camera.combined)
+        }
     }
 
     override fun dispose() {
@@ -80,6 +86,6 @@ abstract class AdvancedBox2dScreen(
         super.dispose()
     }
 
-    abstract fun AdvancedStage.addActorsOnStageWorld()
+    abstract fun Group.addActorsOnStageWorld()
 
 }

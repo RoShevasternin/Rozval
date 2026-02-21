@@ -1,5 +1,6 @@
 package com.lewydo.rozval.game.screens
 
+import com.badlogic.gdx.scenes.scene2d.Group
 import com.lewydo.rozval.game.actors.autoLayout.ATableGroup
 import com.lewydo.rozval.game.actors.autoLayout.AutoLayout
 import com.lewydo.rozval.game.actors.button.location.button.AAvailableLevelButton
@@ -11,6 +12,9 @@ import com.lewydo.rozval.game.actors.button.location.separator.AbstractSeparator
 import com.lewydo.rozval.game.actors.mainPanel.MenuMainPanel
 import com.lewydo.rozval.game.utils.Block
 import com.lewydo.rozval.game.utils.TIME_ANIM_SCREEN
+import com.lewydo.rozval.game.utils.actor.HAlign
+import com.lewydo.rozval.game.utils.actor.VAlign
+import com.lewydo.rozval.game.utils.actor.addActorAligned
 import com.lewydo.rozval.game.utils.actor.animDelay
 import com.lewydo.rozval.game.utils.actor.animHide
 import com.lewydo.rozval.game.utils.actor.animShow
@@ -40,7 +44,7 @@ class MenuScreen: AdvancedScreen() {
 
     var availableLevelBtnBlock: (Int) -> Unit = {}
 
-    override fun AdvancedStage.addActorsOnStageUI() {
+    override fun Group.addActorsOnStageUI() {
         mainLogic()
 
         stageUI.root.color.a = 0f
@@ -80,14 +84,14 @@ class MenuScreen: AdvancedScreen() {
 
     // Actors ------------------------------------------------------------------------
 
-    private fun AdvancedStage.addMainPanel() {
-        addActor(mainPanel)
-        mainPanel.setBounds(1765f, 0f, 155f, 1080f)
+    private fun Group.addMainPanel() {
+        mainPanel.setSize(155f, 1080f)
+        addActorAligned(mainPanel, HAlign.END, VAlign.CENTER)
     }
 
-    private fun AdvancedStage.addTableGroup() {
-        addActor(tableGroup)
-        tableGroup.setBounds(0f, 0f, 1765f, 1080f)
+    private fun Group.addTableGroup() {
+        tableGroup.setSize(1765f, 1080f)
+        addActorAligned(tableGroup, HAlign.CENTER, VAlign.CENTER)
     }
 
     private suspend fun addLevels() {

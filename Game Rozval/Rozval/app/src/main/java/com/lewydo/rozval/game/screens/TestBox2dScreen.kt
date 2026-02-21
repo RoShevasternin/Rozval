@@ -1,6 +1,7 @@
 package com.lewydo.rozval.game.screens
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle
@@ -14,6 +15,7 @@ import com.lewydo.rozval.game.box2d.bodies.BPersik
 import com.lewydo.rozval.game.box2d.bodies.BWood
 import com.lewydo.rozval.game.box2d.bodiesGroup.BGBorders
 import com.lewydo.rozval.game.utils.*
+import com.lewydo.rozval.game.utils.actor.addAndFillActor
 import com.lewydo.rozval.game.utils.actor.animDelay
 import com.lewydo.rozval.game.utils.actor.animHide
 import com.lewydo.rozval.game.utils.actor.animShow
@@ -42,7 +44,7 @@ class TestBox2dScreen(): AdvancedBox2dUserScreen() {
     private val bgBorders = BGBorders(this)
 
     override fun show() {
-        stageBackScreen.root.color.a = 0f
+        stageBack.root.color.a = 0f
         stageUI.root.color.a   = 0f
 
         //setBackgrounds(gdxGame.assetsAll.listBackgroundLVL[MenuScreen.LVL_CLICK-1])
@@ -64,7 +66,7 @@ class TestBox2dScreen(): AdvancedBox2dUserScreen() {
     override fun animShow(blockEnd: Block) {
         stageUI.root.children.onEach { it.clearActions() }
 
-        stageBackScreen.root.animShow(TIME_ANIM_SCREEN)
+        stageBack.root.animShow(TIME_ANIM_SCREEN)
         stageUI.root.animShow(TIME_ANIM_SCREEN)
 
         stageUI.root.animDelay(TIME_ANIM_SCREEN) { blockEnd() }
@@ -73,19 +75,19 @@ class TestBox2dScreen(): AdvancedBox2dUserScreen() {
     override fun animHide(blockEnd: Block) {
         stageUI.root.children.onEach { it.clearActions() }
 
-        stageBackScreen.root.animHide(TIME_ANIM_SCREEN)
+        stageBack.root.animHide(TIME_ANIM_SCREEN)
         stageUI.root.animHide(TIME_ANIM_SCREEN)
 
         stageUI.root.animDelay(TIME_ANIM_SCREEN) { blockEnd() }
     }
 
-    override fun AdvancedStage.addActorsOnStageUI() {
+    override fun Group.addActorsOnStageUI() {
         addMainPanel()
         addTestFPSandProgress()
         addBtnReset()
     }
 
-    override fun AdvancedStage.addActorsOnStageWorld() {
+    override fun Group.addActorsOnStageWorld() {
         addAndFillActor(Image(drawerUtil.getTexture(GameColor.background)))
 
         create_BGBorders()
@@ -96,7 +98,7 @@ class TestBox2dScreen(): AdvancedBox2dUserScreen() {
 
     // Actors ------------------------------------------------------------------------
 
-    private fun AdvancedStage.addMainPanel() {
+    private fun Group.addMainPanel() {
         addActor(mainPanel)
         mainPanel.setBounds(1765f, 0f, 155f, 1080f)
 
@@ -105,7 +107,7 @@ class TestBox2dScreen(): AdvancedBox2dUserScreen() {
         }
     }
 
-    private fun AdvancedStage.addTestFPSandProgress() {
+    private fun Group.addTestFPSandProgress() {
         addActor(progress)
         progress.setBounds(159f, 944f, 698f, 106f)
 
@@ -122,7 +124,7 @@ class TestBox2dScreen(): AdvancedBox2dUserScreen() {
         }
     }
 
-    private fun AdvancedStage.addBtnReset() {
+    private fun Group.addBtnReset() {
         addActor(reset)
         reset.setBounds(39f, 944f, 106f, 106f)
 

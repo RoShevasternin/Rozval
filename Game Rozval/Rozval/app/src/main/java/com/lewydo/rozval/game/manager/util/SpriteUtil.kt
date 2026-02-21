@@ -16,9 +16,17 @@ class SpriteUtil {
 
      class All {
          private fun getAllRegion(name: String): TextureRegion = SpriteManager.EnumAtlas.ALL.data.atlas.findRegion(name)
+         private fun getThanksRegion(name: String): TextureRegion = SpriteManager.EnumAtlas.THANKS.data.atlas.findRegion(name)
          private fun getLevelBtnRegion(name: String): TextureRegion = SpriteManager.EnumAtlas.LEVEL_BTN.data.atlas.findRegion(name)
 
          private fun getNinePath(name: String): NinePatch = SpriteManager.EnumAtlas.ALL.data.atlas.createPatch(name)
+
+         // atlas All ------------------------------------------------------------------------------
+
+         val built_with   = getThanksRegion("built_with")
+         val lewydo_heart = getThanksRegion("lewydo_heart")
+         val Lewydo_TM    = getThanksRegion("Lewydo_TM")
+         val libGDX       = getThanksRegion("libGDX")
 
          // atlas All ------------------------------------------------------------------------------
 
@@ -78,6 +86,7 @@ class SpriteUtil {
          val BRICK       = SpriteManager.EnumTexture.BRICK.data.texture
          val WOOD        = SpriteManager.EnumTexture.WOOD.data.texture
          val RESET       = SpriteManager.EnumTexture.RESET.data.texture
+         val GRID        = SpriteManager.EnumTexture.GRID.data.texture
      }
 
 }

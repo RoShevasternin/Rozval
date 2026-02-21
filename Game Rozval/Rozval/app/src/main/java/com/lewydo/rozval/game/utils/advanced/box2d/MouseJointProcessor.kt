@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.QueryCallback
 import com.badlogic.gdx.physics.box2d.joints.MouseJoint
 import com.badlogic.gdx.physics.box2d.joints.MouseJointDef
 import com.badlogic.gdx.utils.viewport.FitViewport
+import com.badlogic.gdx.utils.viewport.Viewport
 import com.lewydo.rozval.game.box2d.AbstractBody
 import com.lewydo.rozval.game.box2d.AbstractJoint
 import com.lewydo.rozval.game.box2d.BodyId
@@ -17,7 +18,7 @@ import com.lewydo.rozval.game.utils.scaledToWorld
 
 class MouseJointProcessor(
     private val world: WorldUtil,
-    private val viewportWorld: FitViewport,
+    private val viewportWorld: Viewport,
     private val bStatic: BStatic,
     private val jMouse: AbstractJoint<MouseJoint, MouseJointDef>
 ) : InputAdapter() {

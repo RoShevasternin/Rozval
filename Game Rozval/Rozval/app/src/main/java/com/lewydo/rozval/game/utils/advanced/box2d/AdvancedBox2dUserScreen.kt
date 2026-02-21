@@ -27,7 +27,7 @@ abstract class AdvancedBox2dUserScreen: AdvancedBox2dScreen(WorldUtil()) {
             mouseJointProcessor,   // Фізика (MouseJoint)
             gestureDetector,       // Камера (GestureDetector)
             stageWorld,
-            stageBackScreen
+            stageBack
         )
     }
 

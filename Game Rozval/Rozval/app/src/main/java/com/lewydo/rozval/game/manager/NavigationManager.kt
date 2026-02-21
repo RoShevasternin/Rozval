@@ -37,11 +37,13 @@ class NavigationManager(val game: GDXGame) {
 
     private fun getScreenByName(name: String): AdvancedScreen = when(name) {
         LoaderScreen::class.java.name -> LoaderScreen()
+        ThanksScreen::class.java.name -> ThanksScreen()
         MenuScreen  ::class.java.name -> MenuScreen()
         GameScreen  ::class.java.name -> GameScreen()
+        TestScreen  ::class.java.name -> TestScreen()
 
-        TestBox2dScreen::class.java.name -> TestBox2dScreen()
-        TestShaderScreen::class.java.name -> TestShaderScreen()
+        TestBox2dScreen    ::class.java.name -> TestBox2dScreen()
+        TestShaderScreen   ::class.java.name -> TestShaderScreen()
 
         else -> MenuScreen()
     }

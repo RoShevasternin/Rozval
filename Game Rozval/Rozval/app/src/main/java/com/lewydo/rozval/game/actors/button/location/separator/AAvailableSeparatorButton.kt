@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle
 import com.badlogic.gdx.utils.Align
 import com.lewydo.rozval.game.utils.GameColor
+import com.lewydo.rozval.game.utils.actor.addAndFillActors
 import com.lewydo.rozval.game.utils.advanced.AdvancedScreen
 import com.lewydo.rozval.game.utils.gdxGame
 

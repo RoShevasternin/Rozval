@@ -20,8 +20,8 @@ android {
         applicationId = "com.lewydo.rozval"
         minSdk = 24
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "2.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -69,9 +69,9 @@ dependencies {
 
     implementation("androidx.core:core-ktx:1.17.0")
     implementation("androidx.appcompat:appcompat:1.7.1")
-    implementation("androidx.activity:activity-ktx:1.12.2")
+    implementation("androidx.activity:activity-ktx:1.12.4")
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.9.6")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.9.7")
     implementation("androidx.datastore:datastore-preferences:1.2.0")
 
     val gdxVersion = "1.14.0"
@@ -93,7 +93,7 @@ dependencies {
 
     implementation("space.earlygrey:shapedrawer:2.6.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.10.0")
 }
 
 tasks.register("copyAndroidNatives") {

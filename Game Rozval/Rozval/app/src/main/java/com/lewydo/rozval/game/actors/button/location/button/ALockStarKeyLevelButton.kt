@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.lewydo.rozval.game.actors.button.AButton
 import com.lewydo.rozval.game.actors.button.location.actors.AStarOrKey
+import com.lewydo.rozval.game.utils.actor.addAndFillActor
 import com.lewydo.rozval.game.utils.actor.animHide
 import com.lewydo.rozval.game.utils.actor.animShow
 import com.lewydo.rozval.game.utils.actor.disable

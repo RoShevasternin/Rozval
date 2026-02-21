@@ -1,6 +1,5 @@
 alias: Rozvalovich
 pass: PasworDenMyHartIs123
 
-policy: https://doc-hosting.flycricket.io/space-ball-privacy-policy/04afd3be-265d-451d-8b2d-b6abe574b4dd/privacy
-
-terms: https://doc-hosting.flycricket.io/space-ball-terms-of-use/26255b2b-d7a1-4354-bee4-d4a405ec3638/terms
+policy: https://doc-hosting.flycricket.io/rozval-privacy-policy/3778c9aa-5ead-4201-aba3-cef9fce5e9b1/privacy
+terms: https://doc-hosting.flycricket.io/rozval-terms-of-use/c3be99e4-d0f6-44c4-9126-bea1c86fc3ac/terms

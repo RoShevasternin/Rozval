@@ -36,6 +36,7 @@ class SpriteManager(var assetManager: AssetManager) {
 
     enum class EnumAtlas(val data: AtlasData) {
         LOADER(AtlasData("atlas/loader.atlas")),
+        THANKS(AtlasData("atlas/thanks.atlas")),
 
         ALL      (AtlasData("atlas/all.atlas")      ),
         LEVEL_BTN(AtlasData("atlas/level_btn.atlas")),
@@ -59,6 +60,7 @@ class SpriteManager(var assetManager: AssetManager) {
         BRICK       (TextureData("textures/TEST/Brick.png")),
         WOOD        (TextureData("textures/TEST/wood.png")),
         RESET       (TextureData("textures/TEST/reset.png")),
+        GRID        (TextureData("textures/TEST/16x9.png")),
     }
 
     data class AtlasData(val path: String) {
