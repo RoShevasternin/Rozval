@@ -19,6 +19,7 @@ import com.lewydo.rozval.game.utils.advanced.AdvancedGroup
 import com.lewydo.rozval.util.cancelCoroutinesAll
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.collections.onEach
 
 abstract class AbstractBody: Destroyable {
@@ -55,6 +56,9 @@ abstract class AbstractBody: Destroyable {
 
     var isDestroyActor = true
 
+    var isDestroyed = false
+        private set
+
     open fun render(deltaTime: Float) {
         renderBlockArray.onEach { it.block(deltaTime) }
         transformActor()
@@ -66,6 +70,13 @@ abstract class AbstractBody: Destroyable {
     open fun postSolve(contactBody: AbstractBody, contact: Contact, impulse: ContactImpulse) = postSolveBlockArray.forEach { it.block(contactBody, contact, impulse) }
 
     override fun destroy() {
+        if (!isDestroyed) {
+            isDestroyed = true
+            screenBox2d.worldUtil.destroyableSet.add(this)
+        }
+    }
+
+    fun destroyInternal() {
         if (body != null) {
             id = BodyId.NONE
 
@@ -105,6 +116,7 @@ abstract class AbstractBody: Destroyable {
             addActor()
 
             isDestroyActor = true
+            isDestroyed    = false
         }
     }
 

@@ -31,6 +31,8 @@ class WorldUtil: Disposable {
     val contactFilter   = WorldContactFilter()
     val contactListener = WorldContactListener()
 
+    val destroyableSet = mutableSetOf<AbstractBody>()
+
     init {
         world.setContactFilter(contactFilter)
         world.setContactListener(contactListener)
@@ -53,10 +55,17 @@ class WorldUtil: Disposable {
         }
 
         world.bodies().onEach { (it.userData as AbstractBody).render(deltaTime) }
+
+        processDestroyQueue()
     }
 
     fun debug(matrix4: Matrix4) {
          if (isDebug) debugRenderer.render(world, matrix4)
+    }
+
+    private fun processDestroyQueue() {
+        destroyableSet.forEach { it.destroyInternal() }
+        destroyableSet.clear()
     }
 
 }
